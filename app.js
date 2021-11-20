@@ -73,6 +73,23 @@ app.patch('/api/v1/tours/:id', (req, res) => {
   })
 });
 
+app.delete('/api/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+
+  if (id > tours.length - 1) {
+    res.status(404).json({
+      status: 'fail',
+      data: 'Cannot find a tour with this id'
+    })
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null
+  })
+
+});
+
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}...`);
 });
