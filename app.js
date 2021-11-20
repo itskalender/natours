@@ -8,7 +8,7 @@ const port  = 3000;
 
 const tours = JSON.parse( fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8') );
 
-app.get('/v1/tours', (req, res) => {
+app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -18,7 +18,7 @@ app.get('/v1/tours', (req, res) => {
   })
 });
 
-app.get('/v1/tours/:id', (req, res) => {
+app.get('/api/v1/tours/:id', (req, res) => {
   const { id } = req.params;
 
   if (id > tours.length - 1) {
@@ -39,7 +39,7 @@ app.get('/v1/tours/:id', (req, res) => {
 
 });
 
-app.post('/v1/tours', (req, res) => {
+app.post('/api/v1/tours', (req, res) => {
   const { body } = req;
   
   const newId   = tours[tours.length - 1].id + 1;
@@ -53,6 +53,24 @@ app.post('/v1/tours', (req, res) => {
     
     res.status(201).json(newTour);
   } );
+});
+
+app.patch('/api/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+
+  if (id > tours.length - 1) {
+    res.status(404).json({
+      status: 'fail',
+      data: 'Cannot find a tour with this id'
+    })
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: '<Updated object...>'
+    }
+  })
 });
 
 app.listen(port, () => {
