@@ -6,7 +6,7 @@ app.use(express.json());
 
 const port  = 3000;
 
-const tours = JSON.parse( fs.readFileSync('./dev-data/data/tours-simple.json', 'utf8') );
+const tours = JSON.parse( fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8') );
 
 app.get('/v1/tours', (req, res) => {
   res.status(200).json({
@@ -18,6 +18,27 @@ app.get('/v1/tours', (req, res) => {
   })
 });
 
+app.get('/v1/tours/:id', (req, res) => {
+  const { id } = req.params;
+
+  if (id > tours.length - 1) {
+    res.status(404).json({
+      status: 'fail',
+      data: 'Cannot find a tour with this id'
+    })
+  }
+
+  const tour = tours.find(tour => tour.id == id);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour
+    }
+  })
+
+});
+
 app.post('/v1/tours', (req, res) => {
   const { body } = req;
   
@@ -26,7 +47,7 @@ app.post('/v1/tours', (req, res) => {
 
   tours.push(newTour);
 
-  fs.writeFile('./dev-data/data/tours-simple.json', JSON.stringify(tours, null, 2), (err) => {
+  fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours, null, 2), (err) => {
     if (err)
       console.error(err);
     
