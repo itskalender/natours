@@ -2,10 +2,9 @@
   "name": "natours",
   "version": "1.0.0",
   "description": "An application for learning Node.js, Express.js, MongoDB and Mongoose",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "watch": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "nodemon server.js"
   },
   "author": "Kalender Toptas",
   "license": "ISC",
