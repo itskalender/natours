@@ -10,8 +10,13 @@ app.use((req, res, next) => {
   console.log('First Middleware - 1️⃣');
   next();
 });
-app.use(morgan('dev'));
+
+if ( process.env.NODE_ENV === 'development' ) {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
+
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
 
