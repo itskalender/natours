@@ -2,29 +2,6 @@ const fs = require('fs');
 
 const tours = JSON.parse( fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf8') );
 
-const checkTourId = (_, res, next, val) => {
-  if (val > tours.length - 1) {
-    return res.status(404).json({
-      status: 'fail',
-      data: 'Cannot find a tour with this id'
-    })
-  }
-  next();
-}
-
-const checkReqBody = (req, res, next) => {
-  const { body } = req;
-
-  if (body.name === undefined || body.price === undefined) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'You have to specify tour name and tour price❗'
-    })
-  }
-
-  next();
-}
-
 const getTours = (_, res) => {
   res.status(200).json({
     status: 'success',
@@ -81,8 +58,6 @@ const deleteTour = (_, res) => {
 }
 
 module.exports = {
-  checkTourId,
-  checkReqBody,
   getTours,
   getTour,
   createTour,

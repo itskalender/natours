@@ -1,15 +1,17 @@
-const express = require('express');
-
-const router  = express.Router();
+const express     = require('express');
+const router      = express.Router();
 const {
-  checkTourId,
-  checkReqBody,
   getTours,
   getTour,
   createTour,
   updateTour,
   deleteTour
-}             = require('../controllers/tours');
+}                 = require('../controllers/tours');
+const {
+  checkTourId,
+  checkReqBody,
+}                 = require('../middlewares/tours');
+
 
 router.param('id', checkTourId);
 
