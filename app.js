@@ -7,7 +7,7 @@ const toursRouter = require('./routes/tours');
 const usersRouter = require('./routes/users');
 
 app.use((req, res, next) => {
-  console.log('My first middleware - 1 1️⃣');
+  console.log('First Middleware - 1️⃣');
   next();
 });
 app.use(morgan('dev'));
