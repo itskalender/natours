@@ -2,7 +2,30 @@ const fs = require('fs');
 
 const tours = JSON.parse( fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf8') );
 
-const getTours = (req, res) => {
+const checkTourId = (_, res, next, val) => {
+  if (val > tours.length - 1) {
+    return res.status(404).json({
+      status: 'fail',
+      data: 'Cannot find a tour with this id'
+    })
+  }
+  next();
+}
+
+const checkReqBody = (req, res, next) => {
+  const { body } = req;
+
+  if (body.name === undefined || body.price === undefined) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'You have to specify tour name and tour price❗'
+    })
+  }
+
+  next();
+}
+
+const getTours = (_, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -14,13 +37,6 @@ const getTours = (req, res) => {
 
 const getTour = (req, res) => {
   const { id } = req.params;
-
-  if (id > tours.length - 1) {
-    res.status(404).json({
-      status: 'fail',
-      data: 'Cannot find a tour with this id'
-    })
-  }
 
   const tour = tours.find(tour => tour.id == id);
 
@@ -40,7 +56,7 @@ const createTour = (req, res) => {
 
   tours.push(newTour);
 
-  fs.writeFile(`${__dirname}/dev-data/data/tours-simple.json`, JSON.stringify(tours, null, 2), (err) => {
+  fs.writeFile(`${__dirname}/../dev-data/data/tours-simple.json`, JSON.stringify(tours, null, 2), (err) => {
     if (err)
       console.error(err);
     
@@ -48,16 +64,7 @@ const createTour = (req, res) => {
   });
 }
 
-const updateTour = (req, res) => {
-  const { id } = req.params;
-
-  if (id > tours.length - 1) {
-    res.status(404).json({
-      status: 'fail',
-      data: 'Cannot find a tour with this id'
-    })
-  }
-
+const updateTour = (_, res) => {
   res.status(200).json({
     status: 'success',
     data: {
@@ -66,16 +73,7 @@ const updateTour = (req, res) => {
   })
 }
 
-const deleteTour = (req, res) => {
-  const { id } = req.params;
-
-  if (id > tours.length - 1) {
-    res.status(404).json({
-      status: 'fail',
-      data: 'Cannot find a tour with this id'
-    })
-  }
-
+const deleteTour = (_, res) => {
   res.status(204).json({
     status: 'success',
     data: null
@@ -83,6 +81,8 @@ const deleteTour = (req, res) => {
 }
 
 module.exports = {
+  checkTourId,
+  checkReqBody,
   getTours,
   getTour,
   createTour,
