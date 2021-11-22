@@ -1,8 +1,10 @@
-const fs      = require('fs');
-const express = require('express');
-const morgan  = require('morgan');
+const fs          = require('fs');
+const express     = require('express');
+const morgan      = require('morgan');
 
-const app   = express();
+const app         = express();
+const toursRouter = express.Router();
+const usersRouter = express.Router();
 
 /* MIDDLEWARES */
 app.use((req, res, next) => {
@@ -11,6 +13,8 @@ app.use((req, res, next) => {
 });
 app.use(morgan('dev'));
 app.use(express.json());
+app.use('/api/v1/tours', toursRouter);
+app.use('/api/v1/users', usersRouter);
 
 /* SERVER SETTINGS */
 const port  = 3000;
@@ -127,20 +131,20 @@ const deleteUser = (req, res) => {
 }
 
 /* ROUTES */
-app.route('/api/v1/tours')
+toursRouter.route('/')
   .get(getTours)
   .post(createTour)
 
-app.route('/api/v1/tours/:id')
+toursRouter.route('/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour)
 
-app.route('/api/v1/users')
+usersRouter.route('/')
   .get(getUsers)
   .post(createUser)
 
-app.route('/api/v1/users/:id')
+usersRouter.route('/:id')
   .get(getUser)
   .patch(updateUser)
   .delete(deleteUser)
