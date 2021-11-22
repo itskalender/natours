@@ -1,13 +1,22 @@
 const fs      = require('fs');
 const express = require('express');
+const morgan  = require('morgan');
 
 const app   = express();
+
+/* MIDDLEWARES */
+app.use((req, res, next) => {
+  console.log('My first middleware - 1 1️⃣');
+  next();
+});
+app.use(morgan('dev'));
 app.use(express.json());
 
+/* SERVER SETTINGS */
 const port  = 3000;
 
+/* REQUEST HANDLERS */
 const tours = JSON.parse( fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8') );
-
 const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -86,23 +95,57 @@ const deleteTour = (req, res) => {
 
 }
 
+const getUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route has not been created yet ❗'
+  })
+}
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route has not been created yet ❗'
+  })
+}
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route has not been created yet ❗'
+  })
+}
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route has not been created yet ❗'
+  })
+}
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route has not been created yet ❗'
+  })
+}
+
+/* ROUTES */
 app.route('/api/v1/tours')
   .get(getTours)
-  .get(createTour)
+  .post(createTour)
 
 app.route('/api/v1/tours/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour)
 
-//#region Old version of routes
-/* app.get('/api/v1/tours', getTours);
-app.get('/api/v1/tours/:id', getTour);
-app.post('/api/v1/tours', createTour);
-app.patch('/api/v1/tours/:id', updateTour);
-app.delete('/api/v1/tours/:id', deleteTour); */
-//#endregion
+app.route('/api/v1/users')
+  .get(getUsers)
+  .post(createUser)
 
+app.route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser)
+
+/* STARTING THE SERVER */
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}...`);
 });
