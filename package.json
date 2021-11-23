@@ -7,7 +7,7 @@
     "start:dev": "nodemon server.js",
     "start:prod": "set NODE_ENV=production && nodemon server.js"
   },
-  "author": "Kalender Toptas",
+  "author": "Kalender Toptas <toptaskalender@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.15"
