@@ -1,37 +1,8 @@
-const Tour = require('../models/tour');
+const BaseService = require('./base-service');
+const Tour        = require('../models/tour')
 
-const find = async () => {
-  try {
-    const tours = await Tour.find();
-    
-    return tours;
-  } catch (err) {
-    throw err;
-  }
+class TourService extends BaseService {
+
 }
 
-const findById = async (id) => {
-  try {
-    const tour = await Tour.findById(id);
-
-    return tour;
-  } catch (err) {
-    throw err;
-  }
-}
-
-const create = async data => {
-  try {
-    const newTour = await Tour.create(data);
-
-    return newTour;
-  } catch (err) {
-    throw err;
-  }
-}
-
-module.exports = {
-  find,
-  findById,
-  create
-}
+module.exports = new TourService(Tour);
