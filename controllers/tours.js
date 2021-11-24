@@ -19,14 +19,24 @@ const getTours = async (_, res) => {
   }
 }
 
-const getTour = (req, res) => {
+const getTour = async (req, res) => {
   const { id } = req.params;
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-    }
-  })
+  try {
+    const tour = await toursService.findById(id);
+  
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour
+      }
+    })
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    })
+  }
 }
 
 const createTour = async (req, res) => {

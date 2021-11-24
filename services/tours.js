@@ -10,6 +10,16 @@ const find = async () => {
   }
 }
 
+const findById = async (id) => {
+  try {
+    const tour = await Tour.findById(id);
+
+    return tour;
+  } catch (err) {
+    throw err;
+  }
+}
+
 const create = async data => {
   try {
     const newTour = await Tour.create(data);
@@ -22,5 +32,6 @@ const create = async data => {
 
 module.exports = {
   find,
+  findById,
   create
 }
