@@ -1,9 +1,19 @@
 const Tour = require('../models/tour');
 
-const createTour = async data => {
+const find = async () => {
+  try {
+    const tours = await Tour.find();
+    
+    return tours;
+  } catch (err) {
+    throw err;
+  }
+}
+
+const create = async data => {
   try {
     const newTour = await Tour.create(data);
-    
+
     return newTour;
   } catch (err) {
     throw err;
@@ -11,5 +21,6 @@ const createTour = async data => {
 }
 
 module.exports = {
-  createTour
+  find,
+  create
 }

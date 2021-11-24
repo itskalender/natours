@@ -1,12 +1,22 @@
 const toursService = require('../services/tours');
 
-const getTours = (_, res) => {
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-    }
-  })
+const getTours = async (_, res) => {
+  try {
+    const tours = await toursService.find();
+
+    res.status(200).json({
+      status: 'success',
+      results: tours.length,
+      data: {
+        tours
+      }
+    })
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    })
+  }
 }
 
 const getTour = (req, res) => {
@@ -21,9 +31,8 @@ const getTour = (req, res) => {
 
 const createTour = async (req, res) => {
   const { body } = req;
-
   try {
-    const newTour = await toursService.createTour(body);
+    const newTour = await toursService.create(body);
 
     res.status(201).json({
       status: 'success',
@@ -31,7 +40,6 @@ const createTour = async (req, res) => {
         tour: newTour
       }
     });
-    
   } catch (err) {
     res.status(400).json({
       status: 'fail',
