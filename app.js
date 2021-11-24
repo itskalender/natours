@@ -6,11 +6,6 @@ const app         = express();
 const toursRouter = require('./routes/tours');
 const usersRouter = require('./routes/users');
 
-app.use((req, res, next) => {
-  console.log('First Middleware - 1️⃣');
-  next();
-});
-
 if ( process.env.NODE_ENV === 'development' ) {
   app.use(morgan('dev'));
 }
