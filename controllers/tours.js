@@ -1,13 +1,10 @@
-const fs = require('fs');
-
-const tours = JSON.parse( fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf8') );
+const toursService = require('../services/tours');
 
 const getTours = (_, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
     data: {
-      tours
     }
   })
 }
@@ -15,30 +12,32 @@ const getTours = (_, res) => {
 const getTour = (req, res) => {
   const { id } = req.params;
 
-  const tour = tours.find(tour => tour.id == id);
-
   res.status(200).json({
     status: 'success',
     data: {
-      tour
     }
   })
 }
 
-const createTour = (req, res) => {
+const createTour = async (req, res) => {
   const { body } = req;
-  
-  const newId   = tours[tours.length - 1].id + 1;
-  const newTour = Object.assign({ id: newId }, body);
 
-  tours.push(newTour);
+  try {
+    const newTour = await toursService.createTour(body);
 
-  fs.writeFile(`${__dirname}/../dev-data/data/tours-simple.json`, JSON.stringify(tours, null, 2), (err) => {
-    if (err)
-      console.error(err);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour
+      }
+    });
     
-    res.status(201).json(newTour);
-  });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err
+    })
+  }
 }
 
 const updateTour = (_, res) => {
