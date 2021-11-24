@@ -8,12 +8,11 @@ const {
   deleteTour
 }                 = require('../controllers/tours');
 const {
-  checkTourId,
-  checkReqBody,
+  checkReqBody
 }                 = require('../middlewares/tours');
 
 
-router.param('id', checkTourId);
+// router.param('id', checkTourId);
 
 router.route('/')
   .get(getTours)
