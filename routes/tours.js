@@ -7,16 +7,12 @@ const {
   updateTour,
   deleteTour
 }                 = require('../controllers/tours');
-const {
-  checkReqBody
-}                 = require('../middlewares/tours');
-
 
 // router.param('id', checkTourId);
 
 router.route('/')
   .get(getTours)
-  .post(checkReqBody, createTour)
+  .post(createTour)
 
 router.route('/:id')
   .get(getTour)
