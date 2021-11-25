@@ -3,17 +3,23 @@ class BaseService {
     this.model = model;
   }
 
-  async find(filterBy = {}, sortBy) {
+  async find(filterBy = {}, sortBy, fieldBy) {
     try {
-      let data;
       let query = this.model.find(filterBy);
 
       if (sortBy) {
-        data = await query.sort(sortBy);
+        query = query.sort(sortBy);
       } else {
-        data = await query;
+        query = query.sort('-createdAt')
+      }
+
+      if (fieldBy) {
+        query = query.select(fieldBy);
+      } else {
+        query = query.select('-__v')
       }
       
+      const data = await query;
       return data;
     } catch (err) {
       throw err;
