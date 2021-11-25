@@ -3,9 +3,16 @@ class BaseService {
     this.model = model;
   }
 
-  async find() {
+  async find(filterBy = {}, sortBy) {
     try {
-      const data = await this.model.find();
+      let data;
+      let query = this.model.find(filterBy);
+
+      if (sortBy) {
+        data = await query.sort(sortBy);
+      } else {
+        data = await query;
+      }
       
       return data;
     } catch (err) {

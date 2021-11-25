@@ -1,8 +1,26 @@
 const toursService = require('../services/tours');
 
-async function getTours(_, res) {
+async function getTours(req, res) {
   try {
-    const tours = await toursService.find();
+    const { query } = req;
+    const { sort }  = query;
+    
+    /* Creating Filtering */
+    let filterBy = {};
+
+    for (let key in query) {
+      const excludedFields  = ['page', 'sort', 'limit', 'fields'];
+      if (!excludedFields.includes(key)) {
+        filterBy[key] = query[key];
+      }
+    }
+    filterBy = JSON.parse( JSON.stringify(filterBy).replace(/\b(gt|gte|lt|lte\b)/g, match => `$${match}`) );
+
+    /* Creating Sorting */
+    const sortBy = sort ? sort.replaceAll(',', ' ') : sort;
+    
+    /* Delegating to the Service */
+    const tours = await toursService.find(filterBy, sortBy);
 
     res.status(200).json({
       status: 'success',
