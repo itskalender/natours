@@ -1,5 +1,5 @@
 const BaseService = require('./base-service');
-const Tour        = require('../models/tour')
+const { Tour }    = require('../models');
 
 class TourService extends BaseService {
 
