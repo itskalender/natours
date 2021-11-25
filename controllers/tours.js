@@ -79,11 +79,22 @@ async function updateTour(req, res) {
   }
 }
 
-async function deleteTour(_, res) {
-  res.status(204).json({
-    status: 'success',
-    data: null
-  })
+async function deleteTour(req, res) {
+  const { id } = req.params;
+
+  try {
+    await toursService.delete(id);
+  
+    res.status(204).json({
+      status: 'success',
+      data: null
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err
+    });
+  }
 }
 
 module.exports = {

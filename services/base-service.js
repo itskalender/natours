@@ -42,6 +42,14 @@ class BaseService {
       throw err
     }
   }
+
+  async delete(id) {
+    try {
+      await this.model.findByIdAndDelete(id);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = BaseService;
