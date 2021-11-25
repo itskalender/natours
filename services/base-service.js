@@ -5,9 +5,9 @@ class BaseService {
 
   async find() {
     try {
-      const tours = await this.model.find();
+      const data = await this.model.find();
       
-      return tours;
+      return data;
     } catch (err) {
       throw err;
     }
@@ -15,9 +15,9 @@ class BaseService {
   
   async findById(id) {
     try {
-      const tour = await this.model.findById(id);
+      const data = await this.model.findById(id);
   
-      return tour;
+      return data;
     } catch (err) {
       throw err;
     }
@@ -25,14 +25,23 @@ class BaseService {
   
   async create(data) {
     try {
-      const newTour = await this.model.create(data);
+      const newData = await this.model.create(data);
   
-      return newTour;
+      return newData;
     } catch (err) {
       throw err;
     }
   }
 
+  async update(id, data) {
+    try {
+      const updatedData = await this.model.findByIdAndUpdate(id, data, {new: true, runValidators: true});
+
+      return updatedData;
+    } catch (err) {
+      throw err
+    }
+  }
 }
 
 module.exports = BaseService;

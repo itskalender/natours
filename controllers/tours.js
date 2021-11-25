@@ -58,13 +58,25 @@ const createTour = async (req, res) => {
   }
 }
 
-const updateTour = (_, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: '<Updated object...>'
-    }
-  })
+const updateTour = async (req, res) => {
+  const { body: data }  = req;
+  const { id }          = req.params;    
+
+  try {
+    const updatedTour = await toursService.update(id, data);
+  
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour: updatedTour
+      }
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err
+    })
+  }
 }
 
 const deleteTour = (_, res) => {
