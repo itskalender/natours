@@ -1,6 +1,6 @@
 const toursService = require('../services/tours');
 
-const getTours = async (_, res) => {
+async function getTours(_, res) {
   try {
     const tours = await toursService.find();
 
@@ -19,7 +19,7 @@ const getTours = async (_, res) => {
   }
 }
 
-const getTour = async (req, res) => {
+async function getTour(req, res) {
   const { id } = req.params;
 
   try {
@@ -39,7 +39,7 @@ const getTour = async (req, res) => {
   }
 }
 
-const createTour = async (req, res) => {
+async function createTour(req, res) {
   const { body } = req;
   try {
     const newTour = await toursService.create(body);
@@ -58,7 +58,7 @@ const createTour = async (req, res) => {
   }
 }
 
-const updateTour = async (req, res) => {
+async function updateTour(req, res) {
   const { body: data }  = req;
   const { id }          = req.params;    
 
@@ -79,7 +79,7 @@ const updateTour = async (req, res) => {
   }
 }
 
-const deleteTour = (_, res) => {
+async function deleteTour(_, res) {
   res.status(204).json({
     status: 'success',
     data: null
