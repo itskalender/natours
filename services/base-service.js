@@ -3,7 +3,7 @@ class BaseService {
     this.model = model;
   }
 
-  async find(filterBy = {}, sortBy, fieldBy) {
+  async find(filterBy = {}, sortBy, fieldBy, skip, limit) {
     try {
       let query = this.model.find(filterBy);
 
@@ -18,7 +18,15 @@ class BaseService {
       } else {
         query = query.select('-__v')
       }
+
+      {
+        const amountOfDocs = await this.countDocuments();
+        if (skip >= amountOfDocs) 
+          throw new Error('Invalid pagination request');
+        query = query.skip(skip).limit(limit);
+      }
       
+
       const data = await query;
       return data;
     } catch (err) {
@@ -59,6 +67,15 @@ class BaseService {
   async delete(id) {
     try {
       await this.model.findByIdAndDelete(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async countDocuments() {
+    try {
+      const amountOfDocs = await this.model.countDocuments();
+      return amountOfDocs;
     } catch (err) {
       throw err;
     }
