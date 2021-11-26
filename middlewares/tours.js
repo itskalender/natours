@@ -1,4 +1,13 @@
-const checkTourId = (_, res, next, val) => {
+function createQueryTop5Ratings(req, res, next) {
+  const { query } = req;
+
+  query.limit = '5';
+  query.sort  = '-ratingsAverage,price';
+
+  next();
+}
+
+function checkTourId(_, res, next, val) {
   if (val > tours.length - 1) {
     return res.status(404).json({
       status: 'fail',
@@ -9,20 +18,7 @@ const checkTourId = (_, res, next, val) => {
   next();
 }
 
-const checkReqBody = (req, res, next) => {
-  const { body } = req;
-
-  if (body.name === undefined || body.price === undefined) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Missing tour name or tour price❗'
-    })
-  }
-
-  next();
-}
-
 module.exports = {
+  createQueryTop5Ratings,
   checkTourId,
-  checkReqBody
 }

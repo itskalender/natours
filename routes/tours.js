@@ -7,8 +7,14 @@ const {
   updateTour,
   deleteTour
 }                 = require('../controllers/tours');
+const {
+  createQueryTop5Ratings
+}                 = require('../middlewares/tours')
 
 // router.param('id', checkTourId);
+
+router.route('/top-5-ratings')
+  .get(createQueryTop5Ratings, getTours)
 
 router.route('/')
   .get(getTours)
