@@ -18,7 +18,7 @@ class BaseService {
       } else {
         query = query.select('-__v')
       }
-
+      /* Is this really an error? */
       {
         const amountOfDocs = await this.countDocuments();
         if (skip >= amountOfDocs) 
@@ -26,7 +26,6 @@ class BaseService {
         query = query.skip(skip).limit(limit);
       }
       
-
       const data = await query;
       return data;
     } catch (err) {
