@@ -106,10 +106,28 @@ async function deleteTour(req, res) {
   }
 }
 
+async function getToursStats(_, res) {
+  try {
+    const stats = await toursService.getToursStats();
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats
+      }
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      message: err
+    });
+  }
+}
+
 module.exports = {
   getTours,
   getTour,
   createTour,
   updateTour,
-  deleteTour
+  deleteTour,
+  getToursStats
 }
