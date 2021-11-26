@@ -109,6 +109,7 @@ async function deleteTour(req, res) {
 async function getToursStats(_, res) {
   try {
     const stats = await toursService.getToursStats();
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -116,10 +117,29 @@ async function getToursStats(_, res) {
       }
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(500).json({ // status code?
       status: 'error',
       message: err
     });
+  }
+}
+
+async function getToursStatsMonthlyPerYear(req, res) {
+  try {
+    const { year }  = req.params;
+    const stats     = await toursService.getMonthlyStatsPerYear(year);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats
+      }
+    })
+  } catch (err) {
+    res.status(500).json({ // status code?
+      status: 'error',
+      message: err
+    })
   }
 }
 
@@ -129,5 +149,6 @@ module.exports = {
   createTour,
   updateTour,
   deleteTour,
-  getToursStats
+  getToursStats,
+  getToursStatsMonthlyPerYear
 }

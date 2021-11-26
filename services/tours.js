@@ -4,7 +4,7 @@ const { Tour }    = require('../models');
 class TourService extends BaseService {
   async getToursStats() {
     try {
-      const stats = await this.model.aggregate([
+      const data = await this.model.aggregate([
         {
           $match: {
             ratingsAverage: { $gte: 4.5 }
@@ -22,15 +22,59 @@ class TourService extends BaseService {
           }
         },
         {
-          $sort: { avgRating: -1, avgPrice: 1 }
+          $sort: { 
+            avgRating: -1, avgPrice: 1
+          }
         },
-        // {
-        //   $match: {
-        //     _id: { $ne: 'EASY'}
-        //   }
-        // }
       ])
-      return stats;
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getMonthlyStatsPerYear(year) {
+    try {
+      const data = await this.model.aggregate([
+        {
+          $unwind: '$startDates'  
+        },
+        {
+          $match: { 
+            startDates: {
+              $gte: new Date(`${year}-01-01`),
+              $lte: new Date(`${year}-12-31`)
+            } 
+          }
+        },
+        {
+          $group: {
+            _id: { $month: '$startDates' },
+            numTours: { $sum: 1 },
+            tours: { $push: '$name' },
+          }
+        },
+        {
+          $addFields: {
+            month: '$_id'
+          }
+        },
+        {
+          $project: {
+            '_id': 0
+          }
+        },
+        {
+          $sort: { 
+            numTours: -1
+          }
+        },
+        {
+          $limit: 12
+        }
+      ]);
+
+      return data;
     } catch (err) {
       throw err;
     }
