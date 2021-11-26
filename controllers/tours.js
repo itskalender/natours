@@ -1,35 +1,17 @@
-const toursService = require('../services/tours');
+const { toursService }  = require('../services');
+const { APIFeatures }   = require('../utils');
 
 async function getTours(req, res) {
   try {
-    const { query }       = req;
-    const { sort }        = query;
-    const { fields }      = query;
-    
-    /* Creating Filtering */
-    let filterBy = {};
+    const { query } = req;
+    const features  = new APIFeatures(query);
 
-    for (let key in query) {
-      const excludedFields  = ['page', 'sort', 'limit', 'fields'];
-      if (!excludedFields.includes(key)) {
-        filterBy[key] = query[key];
-      }
-    }
-    filterBy = JSON.parse( JSON.stringify(filterBy).replace(/\b(gt|gte|lt|lte\b)/g, match => `$${match}`) );
+    const filterBy        = features.filter();
+    const sortBy          = features.sort();
+    const fields          = features.createFields();
+    const { skip, limit } = features.paginate();
 
-    /* Creating Sorting */
-    const sortBy = sort ? sort.replaceAll(',', ' ') : sort;
-
-    /* Creating Query Projection */
-    const fieldBy = fields ? fields.replaceAll(',', ' ') : fields;
-
-    /* Pagination */
-    const page  = Number(query.page) || 1;
-    const limit = Number(query.limit) || 5;
-    const skip  = (page - 1) * limit;
-
-    /* Delegating to the Service */
-    const tours = await toursService.find(filterBy, sortBy, fieldBy, skip, limit);
+    const tours = await toursService.find(filterBy, sortBy, fields, skip, limit);
 
     res.status(200).json({
       status: 'success',
