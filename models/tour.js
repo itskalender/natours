@@ -107,7 +107,6 @@ tourSchema.pre('save', function(next) {
 /* Query Middleware */
 tourSchema.pre(/^find/, function(next) {
   this.find({ isSecret: {$ne: true} });
-  this.select('-__v');
   
   next();
 });
