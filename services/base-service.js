@@ -15,14 +15,16 @@ class BaseService {
 
       if (fieldBy) {
         query = query.select(fieldBy);
-      } else {
-        query = query.select('-__v')
       }
-      /* Is this really an error? */
+      
+      /*
+        Done in pre find middleware for all methods that starts with 'find' 
+        else {
+          query = query.select('-__v')
+        }
+      */
+
       {
-        const amountOfDocs = await this.countDocuments();
-        if (skip >= amountOfDocs) 
-          throw new Error('Invalid pagination request');
         query = query.skip(skip).limit(limit);
       }
       
