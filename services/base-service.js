@@ -17,13 +17,6 @@ class BaseService {
         query = query.select(fieldBy);
       }
       
-      /*
-        Done in pre find middleware for all methods that starts with 'find' 
-        else {
-          query = query.select('-__v')
-        }
-      */
-
       {
         query = query.skip(skip).limit(limit);
       }
