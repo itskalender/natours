@@ -6,7 +6,9 @@ const tourSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A tour must have a name'],
     unique: true,
-    trim: true
+    trim: true,
+    minlength: [5, 'A tour name must have greater than or equal to 5 characters.'],
+    maxlength: [25, 'A tour name must have less than or equal to 25 characters.']
   },
   slug: String,
   duration: {
@@ -15,15 +17,23 @@ const tourSchema = new mongoose.Schema({
   },
   maxGroupSize: {
     type: Number,
-    required: [true, 'A tour must have a max group size']
+    required: [true, 'A tour must have a max group size'],
+    min: [5, 'A tour must have at least 5 people attending.'],
+    max: [20, 'A tour must have less than or equal to 20 people attending.'],
   },
   difficulty: {
     type: String,
-    required: [true, 'A tour must have a difficulty']
+    required: [true, 'A tour must have a difficulty'],
+    enum: {
+      values: ['easy', 'medium', 'difficult'],
+      message: '({VALUE}) is not supported. The supported values: easy, medium and, difficult.'
+    }
   },
   ratingsAverage: {
     type: Number,
-    default: 4.5
+    default: 4.5,
+    min: [1, 'A tour rating must be above or equal to 1.0'],
+    max: [5, 'A tour rating must be below or equal to 5.0']
   },
   ratingsQuantity: {
     type: Number,
@@ -33,7 +43,15 @@ const tourSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'A tour must have a price']
   },
-  priceDiscount: Number,
+  priceDiscount: {
+    type: Number,
+    validate: {
+      validator: function(val) {
+        return val < this.price
+      },
+      message: 'A tour\'s price discount must be below tour\'s regular price.'
+    }
+  },
   summary: {
     type: String,
     trim: true,
@@ -107,7 +125,7 @@ tourSchema.pre('aggregate', function(next) {
   pipeline.unshift({
     $match: { isSecret: { $ne: true } }
   });
-  
+
   next();
 });
 
