@@ -51,7 +51,12 @@ const tourSchema = new mongoose.Schema({
   startDates: [Date],
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
+    select: false
+  },
+  isSecret: {
+    type: Boolean,
+    default: false
   }
 }, {
   toObject: { virtuals: true },
@@ -72,6 +77,25 @@ tourSchema.pre('save', function(next) {
   
   next();
 });
+
+/* 
+tourSchema.post('save', function(doc,next) {
+}); 
+*/
+
+/* Query Middleware */
+tourSchema.pre(/^find/, function(next) {
+  this.find({ isSecret: {$ne: true} });
+  this.select('-__v');
+  
+  next();
+});
+
+/*
+tourSchema.post(/^find/, function(docs, next) {
+  next();
+});
+*/
 
 const Tour = mongoose.model('Tour', tourSchema);
 
