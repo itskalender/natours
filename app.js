@@ -1,10 +1,14 @@
-const express     = require('express');
-const morgan      = require('morgan');
+const express       = require('express');
+const morgan        = require('morgan');
 
-const app         = express();
+const app           = express();
 
-const toursRouter = require('./routes/tours');
-const usersRouter = require('./routes/users');
+const { AppError }  = require('./utils');
+const { 
+  errorController
+}                   = require('./middlewares');
+const toursRouter   = require('./routes/tours');
+const usersRouter   = require('./routes/users');
 
 if ( process.env.NODE_ENV === 'development' ) {
   app.use(morgan('dev'));
@@ -14,5 +18,12 @@ app.use(express.json());
 
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
+
+
+app.all('*', (req, _) => {
+  throw new AppError(`This route (${req.originalUrl}) does not exist on the server❗`, 404);
+});
+
+app.use(errorController);
 
 module.exports = app;
