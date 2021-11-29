@@ -19,7 +19,7 @@ const tourSchema = new mongoose.Schema({
     type      : Number,
     required  : [true, 'A tour must have a max group size'],
     min       : [5, 'A tour must have at least 5 people attending.'],
-    max       : [20, 'A tour must have less than or equal to 20 people attending.'],
+    max       : [25, 'A tour must have less than or equal to 20 people attending.'],
   },
   difficulty: {
     type      : String,
