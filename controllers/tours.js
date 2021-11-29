@@ -1,4 +1,4 @@
-const { toursService }  = require('../services');
+const { tourService }  = require('../services');
 const {
   APIFeatures,
   catchAsync
@@ -13,7 +13,7 @@ const getTours = catchAsync(async (req, res) => {
   const fields          = features.createFields();
   const { skip, limit } = features.paginate();
 
-  const tours = await toursService.find(filterBy, sortBy, fields, skip, limit);
+  const tours = await tourService.find(filterBy, sortBy, fields, skip, limit);
 
   res.status(200).json({
     status: 'success',
@@ -27,7 +27,7 @@ const getTours = catchAsync(async (req, res) => {
 const getTour = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  const tour = await toursService.findById(id);
+  const tour = await tourService.findById(id);
 
   res.status(200).json({
     status: 'success',
@@ -40,7 +40,7 @@ const getTour = catchAsync(async (req, res) => {
 
 const createTour = catchAsync(async (req, res) => {
   const { body }  = req;
-  const newTour   = await toursService.create(body); 
+  const newTour   = await tourService.create(body); 
 
   res.status(201).json({
     status: 'success',
@@ -54,7 +54,7 @@ const updateTour = catchAsync(async (req, res) => {
   const { body: data }  = req;
   const { id }          = req.params;    
 
-  const updatedTour = await toursService.update(id, data);
+  const updatedTour = await tourService.update(id, data);
 
   res.status(200).json({
     status: 'success',
@@ -69,7 +69,7 @@ const updateTour = catchAsync(async (req, res) => {
 const deleteTour = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  await toursService.delete(id);
+  await tourService.delete(id);
 
   res.status(204).json({
     status: 'success',
@@ -79,7 +79,7 @@ const deleteTour = catchAsync(async (req, res) => {
 });
 
 const getToursStats = catchAsync(async (_, res) => {
-  const stats = await toursService.getToursStats();
+  const stats = await tourService.getToursStats();
 
   res.status(200).json({
     status: 'success',
@@ -92,7 +92,7 @@ const getToursStats = catchAsync(async (_, res) => {
 
 const getToursStatsMonthlyPerYear = catchAsync(async (req, res) => {
   const { year }  = req.params;
-  const stats     = await toursService.getMonthlyStatsPerYear(year);
+  const stats     = await tourService.getMonthlyStatsPerYear(year);
 
   res.status(200).json({
     status: 'success',
