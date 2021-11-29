@@ -1,7 +1,8 @@
 const { tourService }  = require('../services');
 const {
   APIFeatures,
-  catchAsync
+  catchAsync,
+  AppError
 }                       = require('../utils');
 
 const getTours = catchAsync(async (req, res) => {
@@ -24,10 +25,14 @@ const getTours = catchAsync(async (req, res) => {
   });
 });
 
-const getTour = catchAsync(async (req, res) => {
+const getTour = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   const tour = await tourService.findById(id);
+
+  if (!tour) {
+    return next(new AppError('Cannot find a tour with this id.', 404));
+  }
 
   res.status(200).json({
     status: 'success',
@@ -50,11 +55,15 @@ const createTour = catchAsync(async (req, res) => {
   });
 });
 
-const updateTour = catchAsync(async (req, res) => {
+const updateTour = catchAsync(async (req, res, next) => {
   const { body: data }  = req;
   const { id }          = req.params;    
 
   const updatedTour = await tourService.update(id, data);
+
+  if (!updatedTour) {
+    return next(new AppError('Cannot find a tour with this id.', 404));
+  }
 
   res.status(200).json({
     status: 'success',
@@ -66,11 +75,15 @@ const updateTour = catchAsync(async (req, res) => {
 });
 
 
-const deleteTour = catchAsync(async (req, res) => {
+const deleteTour = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
-  await tourService.delete(id);
+  const deletedTour = await tourService.delete(id);
 
+  if (!deletedTour) {
+    return next(new AppError('Cannot find a tour with this id.', 404));
+  }
+  
   res.status(204).json({
     status: 'success',
     data: null
