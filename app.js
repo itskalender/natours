@@ -5,7 +5,7 @@ const app           = express();
 
 const { AppError }  = require('./utils');
 const { 
-  errorController
+  errorHandler
 }                   = require('./middlewares');
 const toursRouter   = require('./routes/tours');
 const usersRouter   = require('./routes/users');
@@ -27,6 +27,6 @@ app.all('*', (req, _) => {
   );
 });
 
-app.use(errorController);
+app.use(errorHandler);
 
 module.exports = app;
