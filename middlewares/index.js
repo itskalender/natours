@@ -1,6 +1,6 @@
 const {
   errorHandler
-}                         = require('./error');
+}                         = require('./error-handler');
 const {
   createQueryTop5Ratings
 }                         = require('./tours');
