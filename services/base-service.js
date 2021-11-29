@@ -4,75 +4,44 @@ class BaseService {
   }
 
   async find(filterBy = {}, sortBy, fieldBy, skip, limit) {
-    try {
-      let query = this.model.find(filterBy);
+    let query = this.model.find(filterBy);
 
-      if (sortBy) {
-        query = query.sort(sortBy);
-      } else {
-        query = query.sort('-createdAt')
-      }
-
-      if (fieldBy) {
-        query = query.select(fieldBy);
-      }
-      
-      {
-        query = query.skip(skip).limit(limit);
-      }
-      
-      const data = await query;
-      return data;
-    } catch (err) {
-      throw err;
+    if (sortBy) {
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt')
     }
+
+    if (fieldBy) {
+      query = query.select(fieldBy);
+    }
+    
+    {
+      query = query.skip(skip).limit(limit);
+    }
+    
+    return query;
   }
   
   async findById(id) {
-    try {
-      const data = await this.model.findById(id);
-  
-      return data;
-    } catch (err) {
-      throw err;
-    }
+    return this.model.findById(id);
   }
   
   async create(data) {
-    try {
-      const newData = await this.model.create(data);
-  
-      return newData;
-    } catch (err) {
-      throw err;
-    }
+    return this.model.create(data);
   }
 
   async update(id, data) {
-    try {
-      const updatedData = await this.model.findByIdAndUpdate(id, data, {new: true, runValidators: true});
-
-      return updatedData;
-    } catch (err) {
-      throw err
-    }
+    return this.model.findByIdAndUpdate(id, data, {new: true, runValidators: true});
   }
 
   async delete(id) {
-    try {
-      await this.model.findByIdAndDelete(id);
-    } catch (err) {
-      throw err;
-    }
+    return this.model.findByIdAndDelete(id);
   }
 
   async countDocuments() {
-    try {
-      const amountOfDocs = await this.model.countDocuments();
-      return amountOfDocs;
-    } catch (err) {
-      throw err;
-    }
+    const amountOfDocs = await this.model.countDocuments();
+    return amountOfDocs;
   }
 }
 
