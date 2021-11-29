@@ -1,147 +1,107 @@
 const { toursService }  = require('../services');
-const { APIFeatures }   = require('../utils');
+const {
+  APIFeatures,
+  catchAsync
+}                       = require('../utils');
 
-async function getTours(req, res) {
-  try {
-    const { query } = req;
-    const features  = new APIFeatures(query);
+const getTours = catchAsync(async (req, res) => {
+  const { query } = req;
+  const features  = new APIFeatures(query);
 
-    const filterBy        = features.filter();
-    const sortBy          = features.sort();
-    const fields          = features.createFields();
-    const { skip, limit } = features.paginate();
+  const filterBy        = features.filter();
+  const sortBy          = features.sort();
+  const fields          = features.createFields();
+  const { skip, limit } = features.paginate();
 
-    const tours = await toursService.find(filterBy, sortBy, fields, skip, limit);
+  const tours = await toursService.find(filterBy, sortBy, fields, skip, limit);
 
-    res.status(200).json({
-      status: 'success',
-      results: tours.length,
-      data: {
-        tours
-      }
-    })
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err
-    })
-  }
-}
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      tours
+    }
+  });
+});
 
-async function getTour(req, res) {
+const getTour = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  try {
-    const tour = await toursService.findById(id);
+  const tour = await toursService.findById(id);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour
+    }
+  });
   
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour
-      }
-    })
-  } catch (err) {
-    res.status(404).json({
-      status: 'fail',
-      message: err
-    })
-  }
-}
+});
 
-async function createTour(req, res) {
-  const { body } = req;
-  try {
-    const newTour = await toursService.create(body);
+const createTour = catchAsync(async (req, res) => {
+  const { body }  = req;
+  const newTour   = await toursService.create(body); 
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        tour: newTour
-      }
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err
-    })
-  }
-}
+  res.status(201).json({
+    status: 'success',
+    data: {
+      tour: newTour
+    }
+  });
+});
 
-async function updateTour(req, res) {
+const updateTour = catchAsync(async (req, res) => {
   const { body: data }  = req;
   const { id }          = req.params;    
 
-  try {
-    const updatedTour = await toursService.update(id, data);
-  
-    res.status(200).json({
-      status: 'success',
-      data: {
-        tour: updatedTour
-      }
-    })
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err
-    })
-  }
-}
+  const updatedTour = await toursService.update(id, data);
 
-async function deleteTour(req, res) {
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: updatedTour
+    }
+  });
+  
+});
+
+
+const deleteTour = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  try {
-    await toursService.delete(id);
+  await toursService.delete(id);
+
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
   
-    res.status(204).json({
-      status: 'success',
-      data: null
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err
-    });
-  }
-}
+});
 
-async function getToursStats(_, res) {
-  try {
-    const stats = await toursService.getToursStats();
+const getToursStats = catchAsync(async (_, res) => {
+  const stats = await toursService.getToursStats();
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        stats
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ // status code?
-      status: 'error',
-      message: err
-    });
-  }
-}
+  res.status(200).json({
+    status: 'success',
+    data: {
+      stats
+    }
+  });
 
-async function getToursStatsMonthlyPerYear(req, res) {
-  try {
-    const { year }  = req.params;
-    const stats     = await toursService.getMonthlyStatsPerYear(year);
+});
 
-    res.status(200).json({
-      status: 'success',
-      data: {
-        stats
-      }
-    })
-  } catch (err) {
-    res.status(500).json({ // status code?
-      status: 'error',
-      message: err
-    })
-  }
-}
+const getToursStatsMonthlyPerYear = catchAsync(async (req, res) => {
+  const { year }  = req.params;
+  const stats     = await toursService.getMonthlyStatsPerYear(year);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      stats
+    }
+  });
+  
+});
 
 module.exports = {
   getTours,
