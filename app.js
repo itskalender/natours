@@ -21,7 +21,10 @@ app.use('/api/v1/users', usersRouter);
 
 
 app.all('*', (req, _) => {
-  throw new AppError(`This route (${req.originalUrl}) does not exist on the server❗`, 404);
+  throw new AppError(
+    `This route (${req.originalUrl}) does not exist on the server❗`, 
+    404
+  );
 });
 
 app.use(errorController);
