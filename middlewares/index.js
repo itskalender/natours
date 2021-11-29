@@ -1,11 +1,11 @@
 const {
-  errorController
+  errorHandler
 }                         = require('./error');
 const {
   createQueryTop5Ratings
 }                         = require('./tours');
 
 module.exports = {
-  errorController,
+  errorHandler,
   createQueryTop5Ratings
 }
