@@ -11,7 +11,7 @@ const {
 }                 = require('../controllers/tours');
 const {
   createQueryTop5Ratings
-}                 = require('../middlewares/tours');
+}                 = require('../middlewares');
 
 // router.param('id', checkTourId);
 
