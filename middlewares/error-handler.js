@@ -32,24 +32,43 @@ function sendDevError(err, res) {
   }
 }
 
-function getCastErr(err) {
-  return new AppError(`Invalid ${err.path}: ${err.value}`, 400);
+function createDBCastErr(err) {
+  const msg = `Invalid ${err.path}: ${err.value}`;
+
+  return new AppError(msg, 400);
+}
+
+function createDBDuplicateErr(err) {
+  const msg = `Duplicate field for value: ${err.keyValue.name}`;
+
+  return new AppError(msg, 400);
+}
+
+function createDBValidationErr(err) {
+  const errors  = err.errors;
+  const msg     = Object.values(errors).map(err => err.message).join(' ');
+
+  return new AppError(msg, 400);
 }
 
 function errorHandler(err, req, res, next) {
   if (process.env.NODE_ENV === 'development') {
     sendDevError(err, res);
   } else if (process.env.NODE_ENV.trim() === 'production') {
-    let prodErr;
+    const isCastError         = err.name === 'CastError';
+    const isDuplicationError  = err.code === 11000;
+    const isValidationError   = /\b(validation)\b/g.test(err._message);
+  
+    let prodErr = { ...err };
 
-    switch (err.name) {
-      case 'CastError':
-        prodErr = getCastErr(err);
-        break;
-      default:
-        break;
+    if (isCastError) {
+      prodErr = createDBCastErr(err);
+    } else if (isDuplicationError) { 
+      prodErr = createDBDuplicateErr(err);
+    } else if (isValidationError) {
+      prodErr = createDBValidationErr(err);
     }
-    
+
     sendProdError(prodErr, res);
   }
 }
