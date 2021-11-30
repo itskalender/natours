@@ -3,8 +3,7 @@ require('./mongoose-connection');
 
 const app = require('./app');
 
-const port = process.env.PORT;
-
+const port   = process.env.PORT;
 const server = app.listen(port, () => {
   console.log(`Server listening on port  : ${port} 🖐\nEnviroment                : ${process.env.NODE_ENV}`);
 });
