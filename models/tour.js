@@ -4,7 +4,7 @@ const slugify   = require('slugify');
 const tourSchema = new mongoose.Schema({
   name: {
     type      : String,
-    required  : [true, 'A tour must have a name'],
+    required  : [true, 'A tour must have a name.'],
     unique    : true,
     trim      : true,
     minlength : [5, 'A tour name must have greater than or equal to 5 characters.'],
@@ -13,27 +13,27 @@ const tourSchema = new mongoose.Schema({
   slug        : String,
   duration: {
     type      : Number,
-    required  : [true, 'A tour must have a duration']
+    required  : [true, 'A tour must have a duration.']
   },
   maxGroupSize: {
     type      : Number,
-    required  : [true, 'A tour must have a max group size'],
+    required  : [true, 'A tour must have a max group size.'],
     min       : [5, 'A tour must have at least 5 people attending.'],
     max       : [25, 'A tour must have less than or equal to 20 people attending.'],
   },
   difficulty: {
     type      : String,
-    required  : [true, 'A tour must have a difficulty'],
+    required  : [true, 'A tour must have a difficulty.'],
     enum      : {
       values  : ['easy', 'medium', 'difficult'],
-      message : '({VALUE}) is not supported. The supported values: easy, medium and, difficult.'
+      message : 'A tour difficulty must be either easy, medium or, difficult.'
     }
   },
   ratingsAverage: {
     type      : Number,
     default   : 4.5,
-    min       : [1, 'A tour rating must be above or equal to 1.0'],
-    max       : [5, 'A tour rating must be below or equal to 5.0']
+    min       : [1, 'A tour rating must be above or equal to 1.0.'],
+    max       : [5, 'A tour rating must be below or equal to 5.0.']
   },
   ratingsQuantity: {
     type      : Number,
@@ -41,7 +41,7 @@ const tourSchema = new mongoose.Schema({
   },
   price: {
     type      : Number,
-    required  : [true, 'A tour must have a price']
+    required  : [true, 'A tour must have a price.']
   },
   priceDiscount: {
     type      : Number,
@@ -55,7 +55,7 @@ const tourSchema = new mongoose.Schema({
   summary: {
     type      : String,
     trim      : true,
-    required  : [true, 'A must have a summary']
+    required  : [true, 'A tour must have a summary.']
   },
   description: {
     type      : String,
@@ -63,7 +63,7 @@ const tourSchema = new mongoose.Schema({
   },
   imageCover: {
     type      : String,
-    required  : [true, 'A tour must have a cover image']
+    required  : [true, 'A tour must have a cover image.']
   },
   images      : [String],
   startDates  : [Date],
