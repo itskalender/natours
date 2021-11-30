@@ -10,7 +10,7 @@ const {
 const toursRouter   = require('./routes/tours');
 const usersRouter   = require('./routes/users');
 
-if ( process.env.NODE_ENV === 'development' ) {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
