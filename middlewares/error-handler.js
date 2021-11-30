@@ -1,4 +1,4 @@
-const environment = process.env.NODE_ENV;
+const { AppError } = require('../utils');
 
 function sendProdError(err, res) {
   if (err.isOperational) {
@@ -32,11 +32,25 @@ function sendDevError(err, res) {
   }
 }
 
+function getCastErr(err) {
+  return new AppError(`Invalid ${err.path}: ${err.value}`, 400);
+}
+
 function errorHandler(err, req, res, next) {
-  if (environment === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     sendDevError(err, res);
-  } else if (environment === 'production') {
-    sendProdError(err, res);
+  } else if (process.env.NODE_ENV.trim() === 'production') {
+    let prodErr;
+
+    switch (err.name) {
+      case 'CastError':
+        prodErr = getCastErr(err);
+        break;
+      default:
+        break;
+    }
+    
+    sendProdError(prodErr, res);
   }
 }
 
