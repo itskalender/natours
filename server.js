@@ -1,3 +1,9 @@
+process.on('uncaughtException', function exceptionHandler(err) {
+  console.log(`${err.name}: ${err.message}`);
+
+  process.exit(1);
+});
+
 require('dotenv').config();
 require('./mongoose-connection');
 
@@ -8,7 +14,9 @@ const server = app.listen(port, () => {
   console.log(`Server listening on port  : ${port} 🖐\nEnviroment                : ${process.env.NODE_ENV}`);
 });
 
-process.on('unhandledRejection', function rejectionHandler() {
+process.on('unhandledRejection', function rejectionHandler(err) {
+  console.log(`${err.name}: ${err.message}`);
+
   server.close(() => {
     let time = 3;
 
