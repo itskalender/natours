@@ -12,7 +12,7 @@ class APIFeatures {
         filterBy[key] = this.query[key];
       }
     }
-    filterBy = JSON.parse( JSON.stringify(filterBy).replace(/\b(gt|gte|lt|lte\b)/g, match => `$${match}`) );
+    filterBy = JSON.parse( JSON.stringify(filterBy).replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`) );
 
     return filterBy;
   }
