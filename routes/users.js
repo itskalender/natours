@@ -9,6 +9,13 @@ const {
   deleteUser
 }             = require('../controllers/users');
 
+const {
+  signUp
+}             = require('../controllers/sign-up');
+
+router.route('/signup')
+  .post(signUp)
+
 router.route('/')
   .get(getUsers)
   .post(createUser)
