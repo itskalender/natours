@@ -1,5 +1,6 @@
 const mongoose    = require('mongoose');
 const { isEmail } = require('validator');
+const bcyrpt      = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -24,10 +25,26 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type      : String,
     required  : [true, 'Please confirm your password.'],
+    validate  : {
+      validator: function checkPasswordEquality(passwordConfirm) {
+        return this.password === passwordConfirm;
+      },
+      message : 'Please provide a password that is equal to the former.'
+    }
   },
   photo: {
     type      : String,
   }
+});
+
+userSchema.pre('save', async function hashPassword(next) {
+  // Error Handling?
+  if (this.isModified) {
+    this.password         = await bcyrpt.hash(this.password, 12);  
+    this.passwordConfirm  = undefined;
+  }
+
+  next();
 });
 
 const User = mongoose.model('User', userSchema);
