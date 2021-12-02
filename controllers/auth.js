@@ -9,10 +9,11 @@ const signUp = catchAsync(async (req, res) => {
   const { body } = req;
 
   const userData = {
-    name            : body.name,
-    email           : body.email,
-    password        : body.password,
-    passwordConfirm : body.passwordConfirm
+    name              : body.name,
+    email             : body.email,
+    password          : body.password,
+    passwordConfirm   : body.passwordConfirm,
+    passwordUpdatedAt : body.passwordUpdatedAt || '',
   }
   
   const newUser = await userService.create(userData);
@@ -22,7 +23,7 @@ const signUp = catchAsync(async (req, res) => {
    *  const newUser = await userService.create(body);
    */
  
-  const token = signToken();
+  const token = signToken(newUser._id);
 
   res.status(201).json({
     status: 'success',
