@@ -1,9 +1,11 @@
 const APIFeatures = require('./api-features');
 const AppError    = require('./app-error');
 const catchAsync  = require('./catch-async');
+const signToken   = require('./sign-token');
 
 module.exports = {
   APIFeatures,
   AppError,
-  catchAsync
+  catchAsync,
+  signToken
 }

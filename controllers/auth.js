@@ -1,17 +1,9 @@
-const jwt             = require('jsonwebtoken');
 const { userService } = require('../services');
 const { 
   catchAsync,
-  AppError
+  AppError,
+  signToken
 }                     = require('../utils');
-
-function signToken(id) {
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN}
-  );
-}
 
 const signUp = catchAsync(async (req, res) => {
   const { body } = req;
