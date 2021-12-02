@@ -51,15 +51,31 @@ function createDBValidationErr(err) {
   return new AppError(msg, 400);
 }
 
+function createJWTExpiredErr() {
+  const msg = 'Token has expired. Please log in again.';
+
+  return new AppError(msg, 401);
+}
+
+function createJWTSignatureErr() {
+  const msg = 'Invalid token. Please log in.';
+
+  return new AppError(msg, 401);
+}
+
 function errorHandler(err, req, res, next) {
   if (process.env.NODE_ENV === 'development') {
     sendDevError(err, res);
   } else if (process.env.NODE_ENV.trim() === 'production') {
+    
     const isCastError         = err.name === 'CastError';
     const isDuplicationError  = err.code === 11000;
     const isValidationError   = /\b(validation)\b/g.test(err._message);
+    
+    const isJWTExpiredError   = err.name === 'TokenExpiredError';
+    const isJWTSignatureError = err.name === 'JsonWebTokenError';             
   
-    let prodErr = { ...err };
+    let prodErr = err;
 
     if (isCastError) {
       prodErr = createDBCastErr(err);
@@ -67,6 +83,10 @@ function errorHandler(err, req, res, next) {
       prodErr = createDBDuplicateErr(err);
     } else if (isValidationError) {
       prodErr = createDBValidationErr(err);
+    } else if (isJWTExpiredError) {
+      prodErr = createJWTExpiredErr();
+    } else if (isJWTSignatureError) {
+      prodErr = createJWTSignatureErr();
     }
 
     sendProdError(prodErr, res);
