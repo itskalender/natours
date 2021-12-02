@@ -13,12 +13,13 @@ const signUp = catchAsync(async (req, res) => {
     email             : body.email,
     password          : body.password,
     passwordConfirm   : body.passwordConfirm,
-    passwordUpdatedAt : body.passwordUpdatedAt || '',
+    passwordUpdatedAt : body.passwordUpdatedAt || undefined,
   }
   
   const newUser = await userService.create(userData);
   
-  /**  What is the difference? I've already MongoDB schema and, unwanted paths will not be saved.
+  /** 
+   *  What is the difference? I've already MongoDB schema and, unwanted paths will not be saved.
    *  Why are not we good to go with just `body`?
    *  const newUser = await userService.create(body);
    */
