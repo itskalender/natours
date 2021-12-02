@@ -10,7 +10,7 @@ const verifyAuth = catchAsync(async (req, _, next) => {
 
   if (
     !authorization ||
-    !authorization.split(' ')[0] === 'Bearer' ||
+    !(authorization.split(' ')[0] === 'Bearer') ||
     !authorization.split(' ')[1]
   ) {
     return next(new AppError('Unauthorized request. Please log in.', 401));
