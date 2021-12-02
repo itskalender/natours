@@ -10,11 +10,15 @@ const {
 }             = require('../controllers/users');
 
 const {
-  signUp
+  signUp,
+  logIn
 }             = require('../controllers/auth');
 
 router.route('/signup')
   .post(signUp)
+
+router.route('/login')
+  .post(logIn)
 
 router.route('/')
   .get(getUsers)
