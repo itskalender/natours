@@ -10,7 +10,8 @@ const {
   getToursStatsMonthlyPerYear
 }                 = require('../controllers/tours');
 const {
-  createQueryTop5Ratings
+  createQueryTop5Ratings,
+  verifyAuth
 }                 = require('../middlewares');
 
 // router.param('id', checkTourId);
@@ -25,7 +26,7 @@ router.route('/top-5-ratings')
   .get(createQueryTop5Ratings, getTours)
 
 router.route('/')
-  .get(getTours)
+  .get(verifyAuth, getTours)
   .post(createTour)
 
 router.route('/:id')
