@@ -11,7 +11,7 @@ const {
 
 const {
   signUp
-}             = require('../controllers/sign-up');
+}             = require('../controllers/auth');
 
 router.route('/signup')
   .post(signUp)
