@@ -40,7 +40,7 @@ const logIn = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide an email and password.', 400));
   }
 
-  const user = await userService.findOne({ email });
+  const user = await userService.findOne({ email }, '+password');
 
   if ( !user || !(await user.comparePasswords(password, user.password)) ) {
     return next(new AppError('Invalid email or password.', 400));
