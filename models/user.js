@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     minlength : [8, 'A user\'s password has to be at least 8 characters long.'],
     select    : false
   },
+  passwordUpdatedAt: Date,
   passwordConfirm: {
     type      : String,
     required  : [true, 'Please confirm your password.'],
@@ -50,6 +51,16 @@ userSchema.pre('save', async function hashPassword(next) {
 
 userSchema.methods.comparePasswords = async function(password, hash) {
   return await bcyrpt.compare(password, hash);
+}
+
+userSchema.methods.checkPasswordUpdates = function(tokenTimestamp) {
+  if (this.passwordUpdatedAt) {
+    const passwordTimestamp = parseInt(this.passwordUpdatedAt.getTime() / 1000, 10);
+
+    return passwordTimestamp > tokenTimestamp;
+  }
+
+  return false;
 }
 
 const User = mongoose.model('User', userSchema);
