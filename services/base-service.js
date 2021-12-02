@@ -22,6 +22,10 @@ class BaseService {
     
     return query;
   }
+
+  async findOne(filterBy) {
+    return this.model.findOne(filterBy);
+  }
   
   async findById(id) {
     return this.model.findById(id);
