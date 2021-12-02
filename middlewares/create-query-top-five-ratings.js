@@ -7,6 +7,4 @@ function createQueryTop5Ratings(req, res, next) {
   next();
 }
 
-module.exports = {
-  createQueryTop5Ratings,
-}
+module.exports = createQueryTop5Ratings;
