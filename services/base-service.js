@@ -23,8 +23,8 @@ class BaseService {
     return query;
   }
 
-  async findOne(filterBy) {
-    return this.model.findOne(filterBy);
+  async findOne(findBy, fieldBy) {
+    return this.model.findOne(findBy).select(fieldBy);
   }
   
   async findById(id) {
