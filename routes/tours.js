@@ -11,7 +11,8 @@ const {
 }                 = require('../controllers/tours');
 const {
   createQueryTop5Ratings,
-  verifyAuth
+  verifyAuth,
+  restrictTo
 }                 = require('../middlewares');
 
 // router.param('id', checkTourId);
@@ -32,6 +33,9 @@ router.route('/')
 router.route('/:id')
   .get(getTour)
   .patch(updateTour)
-  .delete(deleteTour)
+  .delete(
+    verifyAuth,
+    restrictTo('admin', 'lead-guide'),
+    deleteTour)
 
 module.exports = router;
