@@ -17,6 +17,14 @@ const userSchema = new mongoose.Schema({
     lowercase : true,
     validate  : [isEmail, 'Please provide a valid email.']
   },
+  role: {
+    type      : String,
+    default   : 'user',
+    enum      : {
+      values: ['user', 'guide', 'lead-guide', 'admin'],
+      message: 'A user\'s role must be either user, guide, lead-guide or admin.'
+    }
+  },
   password: {
     type      : String,
     required  : [true, 'A user must have a password.'],
@@ -40,11 +48,13 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function hashPassword(next) {
-  // Error Handling?
-  if (this.isModified) {
-    this.password         = await bcyrpt.hash(this.password, 12);  
-    this.passwordConfirm  = undefined;
+  const isPasswordUpdated = this.isModified('password');
+
+  if (isPasswordUpdated) {
+    this.password = await bcyrpt.hash(this.password, 12);  
   }
+
+  this.passwordConfirm = undefined;
 
   next();
 });
