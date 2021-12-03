@@ -50,14 +50,15 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.pre('save', async function hashPassword(next) {
+userSchema.pre('save', async function(next) {
   const isPasswordChanged = this.isModified('password');
 
-  if (isPasswordChanged) {
-    this.password = await bcyrpt.hash(this.password, 12);  
+  if (!isPasswordChanged) {
+    return next();
   }
-
-  this.passwordConfirm = undefined;
+  
+  this.password         = await bcyrpt.hash(this.password, 12);  
+  this.passwordConfirm  = undefined;
 
   next();
 });
