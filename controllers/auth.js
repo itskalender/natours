@@ -14,16 +14,11 @@ const signUp = catchAsync(async (req, res) => {
     password          : body.password,
     passwordConfirm   : body.passwordConfirm,
     passwordUpdatedAt : body.passwordUpdatedAt || undefined,
+    role              : body.role
   }
   
   const newUser = await userService.create(userData);
   
-  /** 
-   *  What is the difference? I've already MongoDB schema and, unwanted paths will not be saved.
-   *  Why are not we good to go with just `body`?
-   *  const newUser = await userService.create(body);
-   */
- 
   const token = signToken(newUser._id);
 
   res.status(201).json({
