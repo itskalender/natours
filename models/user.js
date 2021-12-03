@@ -1,3 +1,4 @@
+const crypto       = require('crypto')
 const mongoose    = require('mongoose');
 const { isEmail } = require('validator');
 const bcyrpt      = require('bcryptjs');
@@ -31,7 +32,6 @@ const userSchema = new mongoose.Schema({
     minlength : [8, 'A user\'s password has to be at least 8 characters long.'],
     select    : false
   },
-  passwordChangedAt: Date,
   passwordConfirm: {
     type      : String,
     required  : [true, 'Please confirm your password.'],
@@ -42,6 +42,9 @@ const userSchema = new mongoose.Schema({
       message : 'Please provide a password that is equal to the former.'
     }
   },
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetTokenExpiresAt: Date,
   photo: {
     type      : String,
   }
@@ -71,6 +74,20 @@ userSchema.methods.isPasswordChangedAfterJWT = function(tokenTimestamp) {
   }
 
   return false;
+}
+
+userSchema.methods.getPasswordResetTokenForEmail = function() {
+  const passwordResetTokenForEmail = crypto.randomBytes(32).toString('hex');
+
+  const passwordResetTokenForDB = crypto
+    .createHash('sha256')
+    .update(passwordResetTokenForEmail)
+    .digest('hex');
+
+  this.passwordResetToken           = passwordResetTokenForDB;
+  this.passwordResetTokenExpiresAt  = Date.now() + 10 * 60 * 1000;
+
+  return passwordResetTokenForEmail;
 }
 
 const User = mongoose.model('User', userSchema);

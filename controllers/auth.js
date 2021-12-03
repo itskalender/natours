@@ -2,7 +2,8 @@ const { userService } = require('../services');
 const { 
   catchAsync,
   AppError,
-  signToken
+  signToken,
+  sendEmail
 }                     = require('../utils');
 
 const signUp = catchAsync(async (req, res) => {
@@ -13,7 +14,7 @@ const signUp = catchAsync(async (req, res) => {
     email             : body.email,
     password          : body.password,
     passwordConfirm   : body.passwordConfirm,
-    passwordUpdatedAt : body.passwordUpdatedAt || undefined,
+    passwordChangedAt : body.passwordChangedAt || undefined,
     role              : body.role
   }
   
@@ -51,7 +52,34 @@ const logIn = catchAsync(async (req, res, next) => {
   });
 });
 
+const sendForgotPasswordEmail = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+  const user      = await userService.findOne({ email });
+
+  if (!user) {
+    return next(new AppError('Cannot find a user with this email. Please provide a correct email.', 404));
+  }
+
+  const resetToken = user.getPasswordResetTokenForEmail();
+  await user.save({ validateBeforeSave: false });
+
+  const resetPasswordLink = `${req.protocol}://${req.get('host')}/api/v1/users/reset-password/${resetToken}`;
+  const text = `Here is your password reset link.\nPlease perform a patch request with your new password and confirmed password to the link:\n${resetPasswordLink}.`;
+
+  await sendEmail({
+    to: email,
+    subject: 'Reset Password (Valid for 10 min)',
+    text
+  });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Email has been sent to your email address.'
+  });
+});
+
 module.exports = {
   signUp,
-  logIn
+  logIn,
+  sendForgotPasswordEmail
 }

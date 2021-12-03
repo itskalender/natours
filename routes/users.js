@@ -11,7 +11,8 @@ const {
 
 const {
   signUp,
-  logIn
+  logIn,
+  sendForgotPasswordEmail
 }             = require('../controllers/auth');
 
 router.route('/signup')
@@ -19,6 +20,9 @@ router.route('/signup')
 
 router.route('/login')
   .post(logIn)
+
+router.route('/forgot-password')
+  .post(sendForgotPasswordEmail)
 
 router.route('/')
   .get(getUsers)
