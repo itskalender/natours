@@ -26,9 +26,7 @@ const verifyAuth = catchAsync(async (req, _, next) => {
     return next(new AppError('The user belonging to this token is no longer existent.', 401));
   }
 
-  const isPasswordChangedAfterJWT = user.checkPasswordUpdates(decoded.iat);
-
-  if (isPasswordChangedAfterJWT) {
+  if (user.isPasswordChangedAfterJWT(decoded.iat)) {
     return next(new AppError('The user\'s password has been changed. Please log in.', 401));
   }
 

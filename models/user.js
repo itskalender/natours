@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     minlength : [8, 'A user\'s password has to be at least 8 characters long.'],
     select    : false
   },
-  passwordUpdatedAt: Date,
+  passwordChangedAt: Date,
   passwordConfirm: {
     type      : String,
     required  : [true, 'Please confirm your password.'],
@@ -48,9 +48,9 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function hashPassword(next) {
-  const isPasswordUpdated = this.isModified('password');
+  const isPasswordChanged = this.isModified('password');
 
-  if (isPasswordUpdated) {
+  if (isPasswordChanged) {
     this.password = await bcyrpt.hash(this.password, 12);  
   }
 
@@ -63,9 +63,9 @@ userSchema.methods.comparePasswords = async function(password, hash) {
   return await bcyrpt.compare(password, hash);
 }
 
-userSchema.methods.checkPasswordUpdates = function(tokenTimestamp) {
-  if (this.passwordUpdatedAt) {
-    const passwordTimestamp = parseInt(this.passwordUpdatedAt.getTime() / 1000, 10);
+userSchema.methods.isPasswordChangedAfterJWT = function(tokenTimestamp) {
+  if (this.passwordChangedAt) {
+    const passwordTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
 
     return passwordTimestamp > tokenTimestamp;
   }
