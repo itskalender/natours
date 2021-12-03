@@ -18,17 +18,14 @@ const verifyAuth = catchAsync(async (req, _, next) => {
 
   const token = authorization.split(' ')[1];
 
-  /* Verify token */
   const decoded = await verifyToken(token, process.env.JWT_SECRET);
 
-  /* Verify if user still existent */
   const user = await userService.findById(decoded.id);
 
   if(!user) {
     return next(new AppError('The user belonging to this token is no longer existent.', 401));
   }
 
-  /* Check if the password was changed after JWT issued */
   const isPasswordChangedAfterJWT = user.checkPasswordUpdates(decoded.iat);
 
   if (isPasswordChangedAfterJWT) {
@@ -36,7 +33,6 @@ const verifyAuth = catchAsync(async (req, _, next) => {
   }
 
   req.user = user;
-  
   next();
 });
 
