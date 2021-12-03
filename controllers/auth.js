@@ -66,11 +66,15 @@ const sendForgotPasswordEmail = catchAsync(async (req, res, next) => {
   const resetPasswordLink = `${req.protocol}://${req.get('host')}/api/v1/users/reset-password/${resetToken}`;
   const text = `Here is your password reset link.\nPlease perform a patch request with your new password and confirmed password to the link:\n${resetPasswordLink}.`;
 
-  await sendEmail({
-    to: email,
-    subject: 'Reset Password (Valid for 10 min)',
-    text
-  });
+  try {
+    await sendEmail({
+      to: email,
+      subject: 'Reset Password (Valid for 10 min)',
+      text
+    });
+  } catch (err) {
+    return next(new AppError('There was an error as to sending email.', 500));
+  }
 
   res.status(200).json({
     status: 'success',
