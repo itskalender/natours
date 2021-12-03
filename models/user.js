@@ -63,6 +63,21 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
+userSchema.pre('save', function(next) {
+  const isPasswordChanged = this.isModified('password');
+  const isNewDocument     = this.isNew;
+
+  if (!isPasswordChanged || isNewDocument) {
+    return next();
+  }
+  
+  this.passwordChangedAt            = Date.now() - 1000;
+  this.passwordResetToken           = undefined;
+  this.passwordResetTokenExpiresAt  = undefined;
+
+  next();
+});
+
 userSchema.methods.comparePasswords = async function(password, hash) {
   return await bcyrpt.compare(password, hash);
 }
