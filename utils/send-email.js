@@ -14,7 +14,7 @@ function sendEmail(options) {
     from: '"Kalender Toptaş" <toptaskalender@gmail.com>',
     to: options.to,
     subject: options.subject,
-    text: options.text,
+    text: options.text
   });
 }
 
