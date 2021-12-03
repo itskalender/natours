@@ -40,7 +40,6 @@ const getTour = catchAsync(async (req, res, next) => {
       tour
     }
   });
-  
 });
 
 const createTour = catchAsync(async (req, res) => {
@@ -71,7 +70,6 @@ const updateTour = catchAsync(async (req, res, next) => {
       tour: updatedTour
     }
   });
-  
 });
 
 
@@ -88,7 +86,6 @@ const deleteTour = catchAsync(async (req, res, next) => {
     status: 'success',
     data: null
   });
-  
 });
 
 const getToursStats = catchAsync(async (_, res) => {
@@ -100,7 +97,6 @@ const getToursStats = catchAsync(async (_, res) => {
       stats
     }
   });
-
 });
 
 const getToursStatsMonthlyPerYear = catchAsync(async (req, res) => {
@@ -113,7 +109,6 @@ const getToursStatsMonthlyPerYear = catchAsync(async (req, res) => {
       stats
     }
   });
-  
 });
 
 module.exports = {
