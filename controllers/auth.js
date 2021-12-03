@@ -95,18 +95,15 @@ const resetPassword = catchAsync(async (req, res, next) => {
     passwordConfirm
   }                 = req.body;
   
-  // 1 - First check if token is existent... 
   if (!passwordResetToken) {
     return next(new AppError('Please provide a token.', 400));
   }
 
-  // 2 - Hash token
   const hashedPasswordResetToken = crypto
     .createHash('sha256')
     .update(passwordResetToken)
     .digest('hex');
 
-  // 3 - Find User
   const user = await userService.findOne({
     passwordResetToken: hashedPasswordResetToken,
     passwordResetTokenExpiresAt: { $gte: Date.now() }
@@ -116,12 +113,10 @@ const resetPassword = catchAsync(async (req, res, next) => {
     return next(new AppError('Invalid or expired token.', 400));
   }
 
-  // Update password....
   user.password         = password;
   user.passwordConfirm  = passwordConfirm;
   await user.save({ validateBeforeSave: true });
 
-  // Login user
   const JWT = signToken(user._id);
 
   res.status(201).json({
