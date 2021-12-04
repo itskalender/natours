@@ -1,5 +1,6 @@
 const express       = require('express');
 const morgan        = require('morgan');
+const helmet        = require('helmet');
 
 const app           = express();
 
@@ -11,12 +12,14 @@ const {
 const toursRouter   = require('./routes/tours');
 const usersRouter   = require('./routes/users');
 
+app.use(helmet());
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 app.use('/api', limiter);
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
