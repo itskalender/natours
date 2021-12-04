@@ -15,7 +15,6 @@ const signUp = catchAsync(async (req, res) => {
     email             : body.email,
     password          : body.password,
     passwordConfirm   : body.passwordConfirm,
-    passwordChangedAt : body.passwordChangedAt || undefined,
     role              : body.role
   }
   
