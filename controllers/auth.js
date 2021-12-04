@@ -113,8 +113,11 @@ const resetPassword = catchAsync(async (req, res, next) => {
     return next(new AppError('Invalid or expired token.', 400));
   }
 
-  user.password         = password;
-  user.passwordConfirm  = passwordConfirm;
+  user.password                     = password;
+  user.passwordConfirm              = passwordConfirm;
+  this.passwordResetToken           = undefined;
+  this.passwordResetTokenExpiresAt  = undefined;
+
   await user.save({ validateBeforeSave: true });
 
   const JWT = signToken(user._id);
@@ -125,9 +128,39 @@ const resetPassword = catchAsync(async (req, res, next) => {
   });
 });
 
+const updatePassword = catchAsync(async (req, res, next) => {
+  const { id }  = req.user;
+  const {
+    currentPassword,
+    password,
+    passwordConfirm
+  }             = req.body;
+
+  const user = await userService.findOne({ _id: id}, '+password');
+
+  const isOldPasswordEqual = await user.comparePasswords(currentPassword, user.password);
+
+  if (!isOldPasswordEqual) {
+    return next(new AppError('Your current password is not correct. Please provide a correct password.', 400));
+  }
+
+  user.password        = password;
+  user.passwordConfirm = passwordConfirm;
+
+  await user.save({ validateBeforeSave: true });
+
+  const JWT = signToken(user._id);
+
+  res.status(200).json({
+    status: 'success',
+    token: JWT
+  });
+});
+
 module.exports = {
   signUp,
   logIn,
   sendForgotPasswordEmail,
-  resetPassword
+  resetPassword,
+  updatePassword
 }

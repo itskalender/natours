@@ -2,6 +2,10 @@ const express = require('express');
 const router  = express.Router();
 
 const {
+  verifyAuth
+}             = require('../middlewares')
+
+const {
   getUsers,
   getUser,
   createUser,
@@ -13,7 +17,8 @@ const {
   signUp,
   logIn,
   sendForgotPasswordEmail,
-  resetPassword
+  resetPassword,
+  updatePassword
 }             = require('../controllers/auth');
 
 router.route('/signup')
@@ -27,6 +32,9 @@ router.route('/forgot-password')
 
 router.route('/reset-password/:token')
   .patch(resetPassword)
+
+router.route('/update-password')
+  .patch(verifyAuth, updatePassword)
 
 router.route('/')
   .get(getUsers)
