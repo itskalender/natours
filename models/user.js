@@ -1,4 +1,4 @@
-const crypto       = require('crypto')
+const crypto      = require('crypto')
 const mongoose    = require('mongoose');
 const { isEmail } = require('validator');
 const bcyrpt      = require('bcryptjs');
@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type      : String,
     required  : [true, 'Please confirm your password.'],
+    // Re-think if validators works only on save based actions?
     validate  : {
       validator: function checkPasswordEquality(passwordConfirm) {
         return this.password === passwordConfirm;
@@ -71,15 +72,13 @@ userSchema.pre('save', function(next) {
     return next();
   }
   
-  this.passwordChangedAt            = Date.now() - 1000;
-  this.passwordResetToken           = undefined;
-  this.passwordResetTokenExpiresAt  = undefined;
-
+  this.passwordChangedAt = Date.now() - 1000;
+  
   next();
 });
 
 userSchema.methods.comparePasswords = async function(password, hash) {
-  return await bcyrpt.compare(password, hash);
+  return bcyrpt.compare(password, hash);
 }
 
 userSchema.methods.isPasswordChangedAfterJWT = function(tokenTimestamp) {
