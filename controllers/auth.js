@@ -5,21 +5,24 @@ const {
   AppError,
   signToken,
   sendEmail,
-  sanitizeObject
+  sanitizeObject,
+  setJWTCookie
 }                     = require('../utils');
 
 const signUp = catchAsync(async (req, res) => {
   const { body }  = req;
   const userData  = sanitizeObject(body, ['name', 'email', 'password', 'passwordConfirm', 'role']);
 
-  const newUser   = await userService.create(userData);
-  const JWT       = signToken(newUser._id);
+  const user = await userService.create(userData);
+
+  const JWT = signToken(user._id);
+  setJWTCookie(res, JWT);
 
   res.status(201).json({
     status: 'success',
     token: JWT,
     data: {
-      user: newUser
+      user
     }
   });
 });
@@ -38,10 +41,14 @@ const logIn = catchAsync(async (req, res, next) => {
   }
 
   const JWT = signToken();
+  setJWTCookie(res, JWT);
 
   res.status(200).json({
     status: 'success',
-    token: JWT
+    token: JWT,
+    data: {
+      user
+    }
   });
 });
 
@@ -107,16 +114,20 @@ const resetPassword = catchAsync(async (req, res, next) => {
 
   user.password                     = password;
   user.passwordConfirm              = passwordConfirm;
-  this.passwordResetToken           = undefined;
-  this.passwordResetTokenExpiresAt  = undefined;
+  user.passwordResetToken           = undefined;
+  user.passwordResetTokenExpiresAt  = undefined;
 
   await user.save({ validateBeforeSave: true });
 
   const JWT = signToken(user._id);
+  setJWTCookie(res, JWT);
 
   res.status(201).json({
     status: 'success',
     token: JWT,
+    data: {
+      user
+    }
   });
 });
 
@@ -142,10 +153,14 @@ const updatePassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: true });
 
   const JWT = signToken(user._id);
-
+  setJWTCookie(res, JWT);
+  
   res.status(200).json({
     status: 'success',
-    token: JWT
+    token: JWT,
+    data: {
+      user
+    }
   });
 });
 
