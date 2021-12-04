@@ -4,23 +4,16 @@ const {
   catchAsync,
   AppError,
   signToken,
-  sendEmail
+  sendEmail,
+  sanitizeObject
 }                     = require('../utils');
 
 const signUp = catchAsync(async (req, res) => {
-  const { body } = req;
+  const { body }  = req;
+  const userData  = sanitizeObject(body, ['name', 'email', 'password', 'passwordConfirm', 'role']);
 
-  const userData = {
-    name              : body.name,
-    email             : body.email,
-    password          : body.password,
-    passwordConfirm   : body.passwordConfirm,
-    role              : body.role
-  }
-  
-  const newUser = await userService.create(userData);
-  
-  const JWT = signToken(newUser._id);
+  const newUser   = await userService.create(userData);
+  const JWT       = signToken(newUser._id);
 
   res.status(201).json({
     status: 'success',
