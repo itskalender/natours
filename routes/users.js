@@ -10,7 +10,8 @@ const {
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  updateMe
 }             = require('../controllers/users');
 
 const {
@@ -35,6 +36,9 @@ router.route('/reset-password/:token')
 
 router.route('/update-password')
   .patch(verifyAuth, updatePassword)
+
+router.route('/update-me')
+  .patch(verifyAuth, updateMe)
 
 router.route('/')
   .get(getUsers)

@@ -1,6 +1,8 @@
 const { userService } = require('../services');
 const {
-  catchAsync
+  catchAsync,
+  AppError,
+  sanitizeObject
 }                     = require('../utils');
 
 const getUsers = catchAsync(async (req, res) => {
@@ -11,6 +13,25 @@ const getUsers = catchAsync(async (req, res) => {
     results: users.length,
     data: {
       users
+    }
+  });
+});
+
+const updateMe = catchAsync(async (req, res, next) => {
+  const { user, body }  = req;
+
+  const hasPasswordRelatedData = body.password || body.passwordConfirm;
+  if (hasPasswordRelatedData) {
+    return next(new AppError('Please don\'t try to change password via this route. Please use /update-password.', 400));
+  }
+
+  const data        = sanitizeObject(body, ['name', 'email']);
+  const updatedUser = await userService.update(user.id, data);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser
     }
   });
 });
@@ -48,5 +69,6 @@ module.exports = {
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  updateMe
 }
