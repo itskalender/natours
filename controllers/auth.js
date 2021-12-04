@@ -15,6 +15,9 @@ const signUp = catchAsync(async (req, res) => {
 
   const user = await userService.create(userData);
 
+  user.password = undefined;
+  user.active   = undefined;
+
   const JWT = signToken(user._id);
   setJWTCookie(res, JWT);
 
