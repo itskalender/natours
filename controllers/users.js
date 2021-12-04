@@ -5,22 +5,11 @@ const {
   sanitizeObject
 }                     = require('../utils');
 
-const getUsers = catchAsync(async (req, res) => {
-  const users = await userService.find();
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users
-    }
-  });
-});
-
 const updateMe = catchAsync(async (req, res, next) => {
   const { user, body }  = req;
 
   const hasPasswordRelatedData = body.password || body.passwordConfirm;
+
   if (hasPasswordRelatedData) {
     return next(new AppError('Please don\'t try to change password via this route. Please use /update-password.', 400));
   }
@@ -32,6 +21,29 @@ const updateMe = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       user: updatedUser
+    }
+  });
+});
+
+const deleteMe = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  await userService.update(user.id, { active: false });
+
+  res.status(204).json({
+    status: 'success',
+    data: null
+  });
+});
+
+const getUsers = catchAsync(async (req, res) => {
+  const users = await userService.find();
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users
     }
   });
 });
@@ -65,10 +77,11 @@ const deleteUser = (req, res) => {
 }
 
 module.exports = {
+  updateMe,
+  deleteMe,
   getUsers,
   getUser,
   createUser,
   updateUser,
-  deleteUser,
-  updateMe
+  deleteUser
 }

@@ -6,12 +6,13 @@ const {
 }             = require('../middlewares')
 
 const {
+  updateMe,
+  deleteMe,
   getUsers,
   getUser,
   createUser,
   updateUser,
-  deleteUser,
-  updateMe
+  deleteUser
 }             = require('../controllers/users');
 
 const {
@@ -39,6 +40,9 @@ router.route('/update-password')
 
 router.route('/update-me')
   .patch(verifyAuth, updateMe)
+
+router.route('/delete-me')
+  .delete(verifyAuth, deleteMe)
 
 router.route('/')
   .get(getUsers)
