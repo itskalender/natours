@@ -7,7 +7,7 @@ class APIFeatures {
     let filterBy = {};
 
     for (let key in this.query) {
-      const excludedFields  = ['page', 'sort', 'limit', 'fields'];
+      const excludedFields = ['page', 'sort', 'limit', 'fields'];
       if (!excludedFields.includes(key)) {
         filterBy[key] = this.query[key];
       }
