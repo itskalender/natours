@@ -2,6 +2,7 @@ const express       = require('express');
 const morgan        = require('morgan');
 const helmet        = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
+const xss           = require('xss-clean')
 
 const app           = express();
 
@@ -23,6 +24,7 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 
 app.use(mongoSanitize());
+app.use(xss());
 
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
