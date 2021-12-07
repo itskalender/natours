@@ -1,10 +1,12 @@
-const express = require('express');
-const router  = express.Router();
-
-const {
+const express         = require('express');
+const router          = express.Router();
+const { 
+  validate,
   verifyAuth
-}             = require('../middlewares')
-
+}                     = require('../middlewares');
+const {
+  signUpSchema
+}                     = require('../validations');
 const {
   updateMe,
   deleteMe,
@@ -13,18 +15,17 @@ const {
   createUser,
   updateUser,
   deleteUser
-}             = require('../controllers/users');
-
+}                     = require('../controllers/users');
 const {
   signUp,
   logIn,
   sendForgotPasswordEmail,
   resetPassword,
   updatePassword
-}             = require('../controllers/auth');
+}                     = require('../controllers/auth');
 
 router.route('/signup')
-  .post(signUp)
+  .post(validate('body', signUpSchema), signUp)
 
 router.route('/login')
   .post(logIn)
