@@ -8,7 +8,8 @@ const {
   signUpSchema,
   logInSchema,
   forgotPasswordSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  updatePasswordSchema
 }                     = require('../validations');
 const {
   updateMe,
@@ -40,7 +41,7 @@ router.route('/reset-password/:token')
   .patch(validate(['body', 'params'], resetPasswordSchema), resetPassword)
 
 router.route('/update-password')
-  .patch(verifyAuth, updatePassword)
+  .patch(verifyAuth, validate('body', updatePasswordSchema), updatePassword)
 
 router.route('/update-me')
   .patch(verifyAuth, updateMe)
