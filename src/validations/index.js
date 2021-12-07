@@ -6,10 +6,16 @@ const {
   updatePasswordSchema
 }                       = require('./auth');
 
+const {
+  updateMeSchema
+}                       = require('./user');
+
 module.exports = {
   signUpSchema,
   logInSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
-  updatePasswordSchema
+  updatePasswordSchema,
+
+  updateMeSchema
 }
