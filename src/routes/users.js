@@ -7,7 +7,8 @@ const {
 const {
   signUpSchema,
   logInSchema,
-  forgotPasswordSchema
+  forgotPasswordSchema,
+  resetPasswordSchema
 }                     = require('../validations');
 const {
   updateMe,
@@ -36,7 +37,7 @@ router.route('/forgot-password')
   .post(validate('body', forgotPasswordSchema), sendForgotPasswordEmail)
 
 router.route('/reset-password/:token')
-  .patch(resetPassword)
+  .patch(validate(['body', 'params'], resetPasswordSchema), resetPassword)
 
 router.route('/update-password')
   .patch(verifyAuth, updatePassword)
