@@ -84,16 +84,12 @@ const sendForgotPasswordEmail = catchAsync(async (req, res, next) => {
 });
 
 const resetPassword = catchAsync(async (req, res, next) => {
-  const { token: passwordResetToken }   = req.params;
+  const { token: passwordResetToken } = req.params;
   const {
     password,
     passwordConfirm
-  }                 = req.body;
+  }                                   = req.body;
   
-  if (!passwordResetToken) {
-    return next(new AppError('Please provide a token.', 400));
-  }
-
   const hashedPasswordResetToken = crypto
     .createHash('sha256')
     .update(passwordResetToken)
