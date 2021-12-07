@@ -4,14 +4,15 @@ process.on('uncaughtException', function exceptionHandler(err) {
   process.exit(1);
 });
 
-require('dotenv').config();
-require('./mongoose-connection');
+const { setEnv }    = require('./config');
+setEnv();
 
-const app = require('./app');
+const { connectDB } = require('./loaders');
+connectDB();
 
-const port   = process.env.PORT;
-const server = app.listen(port, () => {
-  console.log(`Server listening on port  : ${port} 🖐\nEnviroment                : ${process.env.NODE_ENV}`);
+const app     = require('./app');
+const server  = app.listen(process.env.PORT, () => {
+  console.log(`Server listening on port  : ${process.env.PORT} 🖐\nEnviroment                : ${process.env.NODE_ENV}`);
 });
 
 process.on('unhandledRejection', function rejectionHandler(err) {
