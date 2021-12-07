@@ -30,14 +30,10 @@ const signUp = catchAsync(async (req, res) => {
 const logIn = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return next(new AppError('Please provide an email and password.', 400));
-  }
-
   const user = await userService.findOne({ email }, '+password');
 
   if ( !user || !(await user.comparePasswords(password, user.password)) ) {
-    return next(new AppError('Invalid email or password.', 400));
+    return next(new AppError('User or password is wrong. Please provide correct information.', 400));
   }
 
   const JWT = signToken();
