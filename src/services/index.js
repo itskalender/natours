@@ -1,5 +1,5 @@
-const tourService = require('./tour-service');
-const userService = require('./user-service');
+const tourService = require('./tour');
+const userService = require('./user');
 
 module.exports = {
   tourService,
