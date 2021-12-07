@@ -1,8 +1,10 @@
-const signUpSchema          = require('./sign-up');
-const logInSchema           = require('./log-in');
-const forgotPasswordSchema  = require('./forgot-password');
-const resetPasswordSchema   = require('./reset-password');
-const updatePasswordSchema  = require('./update-password');
+const {
+  signUpSchema,
+  logInSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  updatePasswordSchema
+}                       = require('./auth');
 
 module.exports = {
   signUpSchema,

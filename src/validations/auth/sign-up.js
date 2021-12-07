@@ -1,5 +1,5 @@
 const Joi                   = require('joi');
-const { validations }       = require('../config');
+const { validations }       = require('../../config');
 const { VALID_EMAIL_TLDS }  = validations;
 
 const signUpSchema = Joi.object({
