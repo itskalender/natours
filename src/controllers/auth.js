@@ -131,11 +131,10 @@ const updatePassword = catchAsync(async (req, res, next) => {
     passwordConfirm
   }             = req.body;
 
-  const user = await userService.findOne({ _id: id}, '+password');
+  const user                    = await userService.findOne({ _id: id}, '+password');
+  const isCurrentPasswordEqual  = await user.comparePasswords(currentPassword, user.password);
 
-  const isOldPasswordEqual = await user.comparePasswords(currentPassword, user.password);
-
-  if (!isOldPasswordEqual) {
+  if (!isCurrentPasswordEqual) {
     return next(new AppError('Your current password is not correct. Please provide a correct password.', 400));
   }
 
