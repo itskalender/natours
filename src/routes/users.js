@@ -5,7 +5,9 @@ const {
   verifyAuth
 }                     = require('../middlewares');
 const {
-  signUpSchema
+  signUpSchema,
+  logInSchema,
+  forgotPasswordSchema
 }                     = require('../validations');
 const {
   updateMe,
@@ -28,10 +30,10 @@ router.route('/signup')
   .post(validate('body', signUpSchema), signUp)
 
 router.route('/login')
-  .post(logIn)
+  .post(validate('body', logInSchema), logIn)
 
 router.route('/forgot-password')
-  .post(sendForgotPasswordEmail)
+  .post(validate('body', forgotPasswordSchema), sendForgotPasswordEmail)
 
 router.route('/reset-password/:token')
   .patch(resetPassword)
