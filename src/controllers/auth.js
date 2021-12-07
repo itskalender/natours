@@ -5,15 +5,12 @@ const {
   AppError,
   signToken,
   sendEmail,
-  sanitizeObject,
   setJWTCookie
 }                     = require('../utils');
 
 const signUp = catchAsync(async (req, res) => {
   const { body }  = req;
-  const userData  = sanitizeObject(body, ['name', 'email', 'password', 'passwordConfirm', 'role']);
-
-  const user = await userService.create(userData);
+  const user      = await userService.create(body);
 
   user.password = undefined;
   user.active   = undefined;
