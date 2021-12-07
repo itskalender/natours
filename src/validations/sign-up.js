@@ -1,9 +1,11 @@
-const Joi = require('joi');
+const Joi                   = require('joi');
+const { validations }       = require('../config');
+const { VALID_EMAIL_TLDS }  = validations;
 
 const signUpSchema = Joi.object({
   email: Joi.string()
     .required()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    .email({ minDomainSegments: 2, tlds: { allow: VALID_EMAIL_TLDS } })
     .lowercase(),
 
   password: Joi.string()
@@ -21,6 +23,7 @@ const signUpSchema = Joi.object({
   role: Joi.string()
     .allow('user', 'guide', 'lead-guide', 'admin')
     .default('user')
-});
+})
+  .with('password', 'passwordConfirm');
 
 module.exports = signUpSchema;
