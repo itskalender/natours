@@ -1,9 +1,9 @@
-const { tourService }  = require('../services');
+const { tourService } = require('../services');
 const {
   APIFeatures,
   catchAsync,
   AppError
-}                       = require('../utils');
+}                     = require('../utils');
 
 const getTours = catchAsync(async (req, res) => {
   const { query } = req;
