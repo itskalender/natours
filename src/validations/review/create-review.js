@@ -9,12 +9,9 @@ const updateMeSchema = Joi.object({
     .min(1)
     .max(5),
   
-  author: Joi.string()
-    .required(),
+  author: Joi.string(),
   
   tour: Joi.string()
-    .required()
-
 });
 
 module.exports = updateMeSchema;
