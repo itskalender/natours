@@ -1,7 +1,8 @@
 const router    = require('express').Router();
 const {
   verifyAuth,
-  validate
+  validate,
+  restrictTo
 }               = require('../middlewares');
 const {
   createReviewSchema
@@ -12,7 +13,15 @@ const {
 }               = require('../controllers/review');
 
 router.route('/')
-  .get(verifyAuth, getReviews)
-  .post(verifyAuth, validate('body', createReviewSchema), createReview)
+  .get(
+    verifyAuth,
+    getReviews
+  )
+  .post(
+    verifyAuth,
+    restrictTo('user'),
+    validate('body', createReviewSchema),
+    createReview
+  )
 
 module.exports = router;
