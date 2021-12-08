@@ -36,7 +36,7 @@ const logIn = catchAsync(async (req, res, next) => {
     return next(new AppError('User or password is wrong. Please provide correct information.', 400));
   }
 
-  const JWT = signToken();
+  const JWT = signToken(user._id);
   setJWTCookie(res, JWT);
 
   res.status(200).json({
