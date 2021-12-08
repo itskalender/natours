@@ -1,7 +1,10 @@
-const fs        = require('fs');
-const mongoose  = require('mongoose');
-require('dotenv').config();
-const { Tour }  = require('../../models');
+const { setEnv }  = require('../config');
+const fs          = require('fs');
+const mongoose    = require('mongoose');
+const { Tour }    = require('../models');
+
+/* Set Environment */
+setEnv();
 
 /* DB Connection */
 const db                = process.env.DATABASE_CONNECTION;
@@ -23,7 +26,7 @@ mongoose.connect(connectionString, {
 const args = process.argv.slice(2);
 
 /* Read Tours */
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf8'));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`, 'utf8'));
 
 /* Functions  */
 async function deleteAllTours() {
