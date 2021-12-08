@@ -12,8 +12,10 @@ const {
   errorHandler,
   limiter
 }                   = require('./middlewares');
+
 const toursRouter   = require('./routes/tours');
 const usersRouter   = require('./routes/users');
+const reviewsRouter = require('./routes/reviews');
 
 app.use(helmet());
 
@@ -39,6 +41,7 @@ app.use(hpp({
 
 app.use('/api/v1/tours', toursRouter);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/reviews', reviewsRouter);
 
 app.all('*', (req, _) => {
   throw new AppError(
