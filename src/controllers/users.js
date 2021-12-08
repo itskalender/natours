@@ -39,12 +39,18 @@ const getUsers = catchAsync(async (req, res) => {
   });
 });
 
-const getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route has not been created yet ❗'
-  })
-}
+const getUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.findById(id);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user
+    }
+  });
+});
 
 const createUser = (req, res) => {
   res.status(500).json({
