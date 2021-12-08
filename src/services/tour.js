@@ -2,6 +2,10 @@ const BaseService = require('./base');
 const { Tour }    = require('../models');
 
 class TourService extends BaseService {
+  async findById(id) {
+    return this.model.findById(id).populate('reviews');
+  }
+
   async getToursStats() {
     return this.model.aggregate([
       {
