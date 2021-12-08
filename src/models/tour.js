@@ -129,7 +129,15 @@ const tourSchema = new mongoose.Schema({
 });
 
 tourSchema.virtual('durationWeek').get(function() {
-  return (this.duration / 7).toFixed(1);
+  return this.duration 
+    ? (this.duration / 7).toFixed(1)
+    : null
+});
+
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'tour'
 });
 
 tourSchema.pre('save', function(next) {
