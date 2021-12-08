@@ -49,7 +49,7 @@ router.route('/forgot-password')
 
 router.route('/reset-password/:token')
   .patch(
-    validate(['body', 'params'], resetPasswordSchema),
+    validate(['body', 'params'], resetPasswordSchema), // Should check for token to be alphanumeric?
     resetPassword
   )
 
