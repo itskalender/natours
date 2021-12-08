@@ -1,5 +1,6 @@
-const express     = require('express');
-const router      = express.Router();
+const express       = require('express');
+const router        = express.Router();
+const reviewRouter  = require('./reviews');
 const {
   getTours,
   getTour,
@@ -16,6 +17,8 @@ const {
 }                 = require('../middlewares');
 
 // router.param('id', checkTourId);
+
+router.use('/:id/reviews', reviewRouter)
 
 router.route('/stats')
   .get(getToursStats)
