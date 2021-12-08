@@ -132,7 +132,6 @@ tourSchema.virtual('durationWeek').get(function() {
   return (this.duration / 7).toFixed(1);
 });
 
-/* Document Middleware */
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, {
     replacement: '_',
@@ -143,11 +142,8 @@ tourSchema.pre('save', function(next) {
   next();
 });
 
-/* Query Middleware */
 tourSchema.pre(/^find/, function(next) {
-  this
-    .find({ isSecret: {$ne: true} })
-    .select('-__v');
+  this.find({ isSecret: {$ne: true} });
   
   next();
 });
@@ -155,13 +151,12 @@ tourSchema.pre(/^find/, function(next) {
 tourSchema.pre(/^find/, function(next) {
   this.populate({
     path: 'guides',
-    select: '-__v -passwordChangedAt'
+    select: '-passwordChangedAt'
   });
 
   next();
 });
 
-/* Aggregation Middleware */
 tourSchema.pre('aggregate', function(next) {
   const pipeline = this.pipeline();
 
