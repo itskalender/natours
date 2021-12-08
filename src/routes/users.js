@@ -30,25 +30,48 @@ const {
 }                     = require('../controllers/auth');
 
 router.route('/signup')
-  .post(validate('body', signUpSchema), signUp)
+  .post(
+    validate('body', signUpSchema),
+    signUp
+  )
 
 router.route('/login')
-  .post(validate('body', logInSchema), logIn)
+  .post(
+    validate('body', logInSchema),
+    logIn
+  )
 
 router.route('/forgot-password')
-  .post(validate('body', forgotPasswordSchema), sendForgotPasswordEmail)
+  .post(
+    validate('body', forgotPasswordSchema),
+    sendForgotPasswordEmail
+  )
 
 router.route('/reset-password/:token')
-  .patch(validate(['body', 'params'], resetPasswordSchema), resetPassword)
+  .patch(
+    validate(['body', 'params'], resetPasswordSchema),
+    resetPassword
+  )
 
 router.route('/update-password')
-  .patch(verifyAuth, validate('body', updatePasswordSchema), updatePassword)
+  .patch(
+    verifyAuth,
+    validate('body', updatePasswordSchema),
+    updatePassword
+  )
 
 router.route('/update-me')
-  .patch(verifyAuth, validate('body', updateMeSchema) ,updateMe)
+  .patch(
+    verifyAuth,
+    validate('body', updateMeSchema),
+    updateMe
+  )
 
 router.route('/delete-me')
-  .delete(verifyAuth, deleteMe)
+  .delete(
+    verifyAuth,
+    deleteMe
+  )
 
 router.route('/')
   .get(getUsers)
