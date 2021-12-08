@@ -2,8 +2,8 @@ const {
   catchAsync,
   AppError,
   verifyToken
-}                     = require('../utils');
-const { userService } = require('../services');
+}                     = require('../../utils');
+const { userService } = require('../../services');
 
 const verifyAuth = catchAsync(async (req, _, next) => {
   const { authorization } = req.headers;
