@@ -14,7 +14,12 @@ const getReviews = catchAsync(async (req, res) => {
 });
 
 const createReview = catchAsync(async (req, res) => {
-  const { body } = req;
+  const { body }        = req;
+  const { id: userId }  = req.user;
+  const { id: tourId }  = req.params;
+
+  body.author = body.author ? body.author : userId;
+  body.tour   = body.tour   ? body.tour   : tourId;
 
   const review = await reviewService.create(body);
 
