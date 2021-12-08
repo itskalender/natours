@@ -5,10 +5,12 @@ const {
   resetPasswordSchema,
   updatePasswordSchema
 }                       = require('./auth');
-
 const {
   updateMeSchema
 }                       = require('./user');
+const {
+  createReviewSchema 
+}                       = require('./review');
 
 module.exports = {
   signUpSchema,
@@ -17,5 +19,7 @@ module.exports = {
   resetPasswordSchema,
   updatePasswordSchema,
 
-  updateMeSchema
+  updateMeSchema,
+
+  createReviewSchema
 }
