@@ -23,7 +23,7 @@ mongoose.connect(connectionString, {
 const args = process.argv.slice(2);
 
 /* Read Tours */
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf8'));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf8'));
 
 /* Functions  */
 async function deleteAllTours() {
