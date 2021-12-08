@@ -4,7 +4,6 @@ const catchAsync      = require('./catch-async');
 const signToken       = require('./sign-token');
 const verifyToken     = require('./verify-token');
 const sendEmail       = require('./send-email');
-const sanitizeObject  = require('./sanitize-object');
 const setJWTCookie    = require('./set-jwt-cookie');
 
 module.exports = {
@@ -14,6 +13,5 @@ module.exports = {
   signToken,
   verifyToken,
   sendEmail,
-  sanitizeObject,
   setJWTCookie
 }
