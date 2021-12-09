@@ -17,7 +17,6 @@ const {
   deleteMe,
   getUsers,
   getUser,
-  createUser,
   updateUser,
   deleteUser
 }                     = require('../controllers/users');
@@ -75,7 +74,6 @@ router.route('/delete-me')
 
 router.route('/')
   .get(getUsers)
-  .post(createUser)
 
 router.route('/:id')
   .get(getUser)

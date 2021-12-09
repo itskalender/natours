@@ -53,13 +53,6 @@ const getUser = catchAsync(async (req, res) => {
   });
 });
 
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route has not been created yet ❗'
-  })
-}
-
 const updateUser = (req, res) => {
   res.status(500).json({
     status: 'error',
@@ -74,7 +67,6 @@ module.exports = {
   deleteMe,
   getUsers,
   getUser,
-  createUser,
   updateUser,
   deleteUser
 }
