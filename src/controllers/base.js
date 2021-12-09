@@ -17,6 +17,26 @@ function createOne(service) {
   });
 }
 
+function updateOne(service) {
+  return catchAsync(async (req, res, next) => {
+    const { body: data }  = req;
+    const { id }          = req.params;  
+  
+    const doc = await service.update(id, data);
+  
+    if (!doc) {
+      return next(new AppError('Cannot find a document with this id.', 404));
+    }
+  
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: doc
+      }
+    });
+  });
+}
+
 function deleteOne(service) {
   return catchAsync(async (req, res, next) => {
     const { id }  = req.params;
@@ -35,5 +55,6 @@ function deleteOne(service) {
 
 module.exports = {
   createOne,
+  updateOne,
   deleteOne
 }
