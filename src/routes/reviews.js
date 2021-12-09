@@ -9,7 +9,8 @@ const {
 }               = require('../validations');
 const {
   getReviews,
-  createReview
+  createReview,
+  deleteReview
 }               = require('../controllers/review');
 
 router.route('/')
@@ -23,5 +24,8 @@ router.route('/')
     validate('body', createReviewSchema),
     createReview
   )
+
+router.route('/:id')
+  .delete(deleteReview)
 
 module.exports = router;
