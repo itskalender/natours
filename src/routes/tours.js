@@ -1,6 +1,16 @@
-const express       = require('express');
-const router        = express.Router();
-const reviewRouter  = require('./reviews');
+const express             = require('express');
+const router              = express.Router();
+const reviewRouter        = require('./reviews');
+const {
+  createQueryTop5Ratings,
+  verifyAuth,
+  restrictTo,
+  validate
+}                         = require('../middlewares');
+const {
+  createTourValidation,
+  updateTourValidation
+}                         = require('../validations');
 const {
   getTours,
   getTour,
@@ -9,34 +19,47 @@ const {
   deleteTour,
   getToursStats,
   getToursStatsMonthlyPerYear
-}                 = require('../controllers/tours');
-const {
-  createQueryTop5Ratings,
-  verifyAuth,
-  restrictTo
-}                 = require('../middlewares');
+}                         = require('../controllers/tours');
 
 router.use('/:tourId/reviews', reviewRouter)
 
 router.route('/stats')
   .get(getToursStats)
 
-router.route('/monthly-stats/:year')
-  .get(getToursStatsMonthlyPerYear)
-
 router.route('/top-5-ratings')
-  .get(createQueryTop5Ratings, getTours)
+  .get(
+    createQueryTop5Ratings,
+    getTours
+  )
+
+router.route('/monthly-stats/:year')
+  .get(
+    verifyAuth,
+    restrictTo('guide', 'lead-guide', 'admin'),
+    getToursStatsMonthlyPerYear
+  )
 
 router.route('/')
-  .get(verifyAuth, getTours)
-  .post(createTour)
+  .get(getTours)
+  .post(
+    verifyAuth,
+    restrictTo('lead-guide', 'admin'),
+    validate('body', createTourValidation),
+    createTour
+  )
 
 router.route('/:id')
   .get(getTour)
-  .patch(updateTour)
+  .patch(
+    verifyAuth,
+    restrictTo('lead-guide', 'admin'),
+    validate('body', updateTourValidation),
+    updateTour
+  )
   .delete(
     verifyAuth,
-    restrictTo('admin', 'lead-guide'),
-    deleteTour)
+    restrictTo('lead', 'admin'),
+    deleteTour
+  )
 
 module.exports = router;
