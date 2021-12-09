@@ -14,7 +14,8 @@ const {
   updateUserValidation
 }                           = require('./user');
 const {
-  createReviewValidation 
+  createReviewValidation,
+  updateReviewValidation
 }                           = require('./review');
 
 module.exports = {
@@ -30,5 +31,6 @@ module.exports = {
   updateMeValidation,
   updateUserValidation,
 
-  createReviewValidation
+  createReviewValidation,
+  updateReviewValidation
 }
