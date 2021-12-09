@@ -4,8 +4,8 @@ process.on('uncaughtException', function exceptionHandler(err) {
   process.exit(1);
 });
 
-const { setEnv }    = require('./config');
-setEnv();
+const { setConfig } = require('./config');
+setConfig();
 
 const { connectDB } = require('./loaders');
 connectDB();

@@ -1,2 +1,11 @@
-module.exports.setEnv       = require('./set-env');
-module.exports.validations  = require('./validations');
+const setEnv      = require('./set-env');
+const validations = require('./validations');
+
+function setConfig() {
+  setEnv();
+}
+
+module.exports = {
+  setConfig,
+  validations
+}
