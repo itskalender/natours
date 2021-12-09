@@ -1,6 +1,7 @@
 const { tourService } = require('../services');
 const { 
   createOne,
+  updateOne,
   deleteOne 
 }                     = require('./base');
 const {
@@ -48,24 +49,7 @@ const getTour = catchAsync(async (req, res, next) => {
 
 const createTour = createOne(tourService);
 
-const updateTour = catchAsync(async (req, res, next) => {
-  const { body: data }  = req;
-  const { id }          = req.params;    
-
-  const updatedTour = await tourService.update(id, data);
-
-  if (!updatedTour) {
-    return next(new AppError('Cannot find a tour with this id.', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: updatedTour
-    }
-  });
-});
-
+const updateTour = updateOne(tourService);
 
 const deleteTour = deleteOne(tourService);
 
