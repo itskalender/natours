@@ -34,18 +34,6 @@ const tourSchema = new mongoose.Schema({
     }
   },
 
-  ratingsAverage: {
-    type          : Number,
-    default       : 4.5,
-    min           : [1, 'A tour rating must be above or equal to 1.0.'],
-    max           : [5, 'A tour rating must be below or equal to 5.0.']
-  },
-
-  ratingsQuantity: {
-    type          : Number,
-    default       : 0
-  },
-
   price: {
     type          : Number,
     required      : [true, 'A tour must have a price.']
@@ -59,6 +47,18 @@ const tourSchema = new mongoose.Schema({
       },
       message     : 'A tour\'s price discount must be below tour\'s regular price.'
     }
+  },
+
+  ratingsAverage: {
+    type          : Number,
+    default       : 4.5,
+    min           : [1, 'A tour rating must be above or equal to 1.0.'],
+    max           : [5, 'A tour rating must be below or equal to 5.0.']
+  },
+
+  ratingsQuantity: {
+    type          : Number,
+    default       : 0
   },
 
   summary: {
@@ -78,19 +78,13 @@ const tourSchema = new mongoose.Schema({
   },
 
   images          : [String],
-
-  startDates      : [Date],
-
-  createdAt: {
-    type          : Date,
-    default       : Date.now(),
-    select        : false
-  },
-
+  
   isSecret: {
     type          : Boolean,
     default       : false
   },
+
+  startDates      : [Date],
 
   startLocation: {
     type: {
@@ -120,8 +114,13 @@ const tourSchema = new mongoose.Schema({
   guides: [{
     type          : mongoose.Schema.Types.ObjectId,
     ref           : 'User'
-  }]
+  }],
 
+  createdAt: {
+    type          : Date,
+    default       : Date.now(),
+    select        : false
+  }
 },
 {
   toObject        : { virtuals: true },
