@@ -1,10 +1,10 @@
-const { setEnv }  = require('../config');
-const fs          = require('fs');
-const mongoose    = require('mongoose');
-const { Tour }    = require('../models');
+const { setConfig } = require('../config');
+const fs            = require('fs');
+const mongoose      = require('mongoose');
+const { Tour }      = require('../models');
 
 /* Set Environment */
-setEnv();
+setConfig();
 
 /* DB Connection */
 const db                = process.env.DATABASE_CONNECTION;
