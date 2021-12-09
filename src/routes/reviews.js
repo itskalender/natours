@@ -6,7 +6,8 @@ const {
   setBodyTourAndUserIds
 }               = require('../middlewares');
 const {
-  createReviewSchema
+  createReviewValidation,
+  updateReviewValidation
 }               = require('../validations');
 const {
   getReviews,
@@ -16,22 +17,31 @@ const {
   deleteReview
 }               = require('../controllers/reviews');
 
+router.use(verifyAuth);
+
 router.route('/')
   .get(
-    verifyAuth,
     getReviews
   )
   .post(
-    verifyAuth,
     restrictTo('user'),
     setBodyTourAndUserIds,
-    validate('body', createReviewSchema),
+    validate('body', createReviewValidation),
     createReview
   )
 
 router.route('/:id')
-  .get(getReview)
-  .patch(updateReview)
-  .delete(deleteReview)
+  .get(
+    getReview
+  )
+  .patch(
+    restrictTo('user', 'admin'),
+    validate('body', updateReviewValidation),
+    updateReview
+  )
+  .delete(
+    restrictTo('user', 'admin'),
+    deleteReview
+  )
 
 module.exports = router;
