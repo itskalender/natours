@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const updatePasswordSchema = Joi.object({
+const updatePasswordValidation = Joi.object({
   currentPassword: Joi.string()
     .required()
     .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
@@ -13,4 +13,4 @@ const updatePasswordSchema = Joi.object({
 })
   .with('password', 'passwordConfirm');
 
-module.exports = updatePasswordSchema;
+module.exports = updatePasswordValidation;

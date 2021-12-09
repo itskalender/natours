@@ -1,5 +1,7 @@
-const updateMeSchema = require('./update-me');
+const updateMeValidation    = require('./update-me');
+const updateUserValidation  = require('./update-user');
 
 module.exports = {
-  updateMeSchema
+  updateMeValidation,
+  updateUserValidation
 }

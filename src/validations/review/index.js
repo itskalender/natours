@@ -1,5 +1,5 @@
-const createReviewSchema = require('./create-review');
+const createReviewValidation = require('./create-review');
 
 module.exports = {
-  createReviewSchema
+  createReviewValidation
 }

@@ -1,25 +1,27 @@
 const {
-  signUpSchema,
-  logInSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-  updatePasswordSchema
+  signUpValidation,
+  logInValidation,
+  forgotPasswordValidation,
+  resetPasswordValidation,
+  updatePasswordValidation
 }                       = require('./auth');
 const {
-  updateMeSchema
+  updateMeValidation,
+  updateUserValidation
 }                       = require('./user');
 const {
-  createReviewSchema 
+  createReviewValidation 
 }                       = require('./review');
 
 module.exports = {
-  signUpSchema,
-  logInSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-  updatePasswordSchema,
+  signUpValidation,
+  logInValidation,
+  forgotPasswordValidation,
+  resetPasswordValidation,
+  updatePasswordValidation,
 
-  updateMeSchema,
+  updateMeValidation,
+  updateUserValidation,
 
-  createReviewSchema
+  createReviewValidation
 }

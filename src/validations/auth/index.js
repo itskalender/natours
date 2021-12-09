@@ -1,13 +1,13 @@
-const signUpSchema          = require('./sign-up');
-const logInSchema           = require('./log-in');
-const forgotPasswordSchema  = require('./forgot-password');
-const resetPasswordSchema   = require('./reset-password');
-const updatePasswordSchema  = require('./update-password');
+const signUpValidation          = require('./sign-up');
+const logInValidation           = require('./log-in');
+const forgotPasswordValidation  = require('./forgot-password');
+const resetPasswordValidation   = require('./reset-password');
+const updatePasswordValidation  = require('./update-password');
 
 module.exports = {
-  signUpSchema,
-  logInSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-  updatePasswordSchema
+  signUpValidation,
+  logInValidation,
+  forgotPasswordValidation,
+  resetPasswordValidation,
+  updatePasswordValidation
 }
