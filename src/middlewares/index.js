@@ -3,6 +3,9 @@ const {
   createQueryTop5Ratings
 }                             = require('./tours');
 const {
+  setAuthIdToParam
+}                             = require('./users');
+const {
   setBodyTourAndUserIds
 }                             = require('./reviews');
 const {
@@ -15,6 +18,7 @@ const validate                = require('./validate');
 module.exports = {
   errorHandler,
   createQueryTop5Ratings,
+  setAuthIdToParam,
   setBodyTourAndUserIds,
   verifyAuth,
   restrictTo,
