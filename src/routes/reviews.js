@@ -2,7 +2,8 @@ const router    = require('express').Router({ mergeParams: true });
 const {
   verifyAuth,
   validate,
-  restrictTo
+  restrictTo,
+  setBodyTourAndUserIds
 }               = require('../middlewares');
 const {
   createReviewSchema
@@ -11,7 +12,7 @@ const {
   getReviews,
   createReview,
   deleteReview
-}               = require('../controllers/review');
+}               = require('../controllers/reviews');
 
 router.route('/')
   .get(
@@ -21,6 +22,7 @@ router.route('/')
   .post(
     verifyAuth,
     restrictTo('user'),
+    setBodyTourAndUserIds,
     validate('body', createReviewSchema),
     createReview
   )

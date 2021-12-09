@@ -1,5 +1,10 @@
 const errorHandler            = require('./error-handler');
-const createQueryTop5Ratings  = require('./create-query-top-five-ratings');
+const { 
+  createQueryTop5Ratings
+}                             = require('./tours');
+const {
+  setBodyTourAndUserIds
+}                             = require('./reviews');
 const {
   verifyAuth,
   restrictTo
@@ -10,6 +15,7 @@ const validate                = require('./validate');
 module.exports = {
   errorHandler,
   createQueryTop5Ratings,
+  setBodyTourAndUserIds,
   verifyAuth,
   restrictTo,
   limiter,
