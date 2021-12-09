@@ -4,14 +4,16 @@ const {
   verifyAuth,
   setAuthIdToParam,
   validate,
+  restrictTo,
 }                     = require('../middlewares');
 const {
-  signUpSchema,
-  logInSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-  updatePasswordSchema,
-  updateMeSchema
+  signUpValidation,
+  logInValidation,
+  forgotPasswordValidation,
+  resetPasswordValidation,
+  updatePasswordValidation,
+  updateMeValidation,
+  updateUserValidation
 }                     = require('../validations');
 const {
   getMe,
@@ -32,61 +34,62 @@ const {
 
 router.route('/signup')
   .post(
-    validate('body', signUpSchema),
+    validate('body', signUpValidation),
     signUp
   )
 
 router.route('/login')
   .post(
-    validate('body', logInSchema),
+    validate('body', logInValidation),
     logIn
   )
 
 router.route('/forgot-password')
   .post(
-    validate('body', forgotPasswordSchema),
+    validate('body', forgotPasswordValidation),
     sendForgotPasswordEmail
   )
 
 router.route('/reset-password/:token')
   .patch(
-    validate(['body', 'params'], resetPasswordSchema), // Should check for token to be alphanumeric?
+    validate(['body', 'params'], resetPasswordValidation),
     resetPassword
   )
 
+router.use(verifyAuth);
+
 router.route('/update-password')
   .patch(
-    verifyAuth,
-    validate('body', updatePasswordSchema),
+    validate('body', updatePasswordValidation),
     updatePassword
   )
 
 router.route('/me')
   .get(
-    verifyAuth,
     setAuthIdToParam,
     getMe
   )
 
 router.route('/update-me')
   .patch(
-    verifyAuth,
-    validate('body', updateMeSchema),
+    validate('body', updateMeValidation),
     updateMe
   )
 
 router.route('/delete-me')
-  .delete(
-    verifyAuth,
-    deleteMe
-  )
+  .delete(deleteMe)
+
+router.use(restrictTo('admin'))
 
 router.route('/')
   .get(getUsers)
 
 router.route('/:id')
   .get(getUser)
-  .patch(updateUser)
+  .patch(
+    validate('body', updateUserValidation),
+    updateUser
+  )
   .delete(deleteUser)
 
 module.exports = router;
