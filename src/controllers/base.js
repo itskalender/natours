@@ -3,6 +3,30 @@ const {
   AppError
 }               = require('../utils');
 
+function getOne(service) {
+  return catchAsync(async (req, res, next) => {
+    const { id }  = req.params;
+    const doc     = await service.findById(id);
+  
+    /**
+     * 
+     * Null or throwing error?
+     * 
+     */
+    
+    if (!doc) {
+      return next(new AppError('Cannot find a document with this id.', 404));
+    }
+  
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: doc
+      }
+    });
+  });
+}
+
 function createOne(service) {
   return catchAsync(async (req, res) => {
     const { body }  = req;
@@ -54,6 +78,7 @@ function deleteOne(service) {
 }
 
 module.exports = {
+  getOne,
   createOne,
   updateOne,
   deleteOne
