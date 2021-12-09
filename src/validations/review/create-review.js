@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const updateMeSchema = Joi.object({
+const createReviewValidation = Joi.object({
   review: Joi.string()
     .required()
     .max(100),
@@ -14,4 +14,4 @@ const updateMeSchema = Joi.object({
   tour: Joi.string()
 });
 
-module.exports = updateMeSchema;
+module.exports = createReviewValidation;
