@@ -1,4 +1,6 @@
-const { deleteOne }     = require('./base');
+const { 
+  createOne,
+  deleteOne }           = require('./base');
 const { catchAsync }    = require('../utils');
 const { reviewService } = require('../services');
 
@@ -21,23 +23,7 @@ const getReviews = catchAsync(async (req, res) => {
   })
 });
 
-const createReview = catchAsync(async (req, res) => {
-  const { body }        = req;
-  const { id: userId }  = req.user;
-  const { id: tourId }  = req.params;
-
-  body.author = body.author ? body.author : userId;
-  body.tour   = body.tour   ? body.tour   : tourId;
-
-  const review = await reviewService.create(body);
-
-  res.status(201).json({
-    message: 'success',
-    data: {
-      review
-    }
-  });
-});
+const createReview = createOne(reviewService);
 
 const deleteReview = deleteOne(reviewService);
 
