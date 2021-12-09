@@ -10,6 +10,7 @@ const {
 }               = require('../validations');
 const {
   getReviews,
+  getReview,
   createReview,
   updateReview,
   deleteReview
@@ -29,6 +30,7 @@ router.route('/')
   )
 
 router.route('/:id')
+  .get(getReview)
   .patch(updateReview)
   .delete(deleteReview)
 

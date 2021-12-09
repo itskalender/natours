@@ -1,7 +1,9 @@
-const { 
+const {
+  getOne,
   createOne,
   updateOne,
-  deleteOne }           = require('./base');
+  deleteOne
+}                       = require('./base');
 const { catchAsync }    = require('../utils');
 const { reviewService } = require('../services');
 
@@ -24,14 +26,14 @@ const getReviews = catchAsync(async (req, res) => {
   })
 });
 
-const createReview = createOne(reviewService);
-
-const updateReview = updateOne(reviewService);
-
-const deleteReview = deleteOne(reviewService);
+const getReview     = getOne(reviewService);
+const createReview  = createOne(reviewService);
+const updateReview  = updateOne(reviewService);
+const deleteReview  = deleteOne(reviewService);
 
 module.exports = {
   getReviews,
+  getReview,
   createReview,
   updateReview,
   deleteReview
