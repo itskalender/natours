@@ -1,5 +1,8 @@
 const { tourService } = require('../services');
-const { deleteOne }   = require('./base');
+const { 
+  createOne,
+  deleteOne 
+}                     = require('./base');
 const {
   APIFeatures,
   catchAsync,
@@ -43,17 +46,7 @@ const getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-const createTour = catchAsync(async (req, res) => {
-  const { body }  = req;
-  const newTour   = await tourService.create(body); 
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour
-    }
-  });
-});
+const createTour = createOne(tourService);
 
 const updateTour = catchAsync(async (req, res, next) => {
   const { body: data }  = req;
