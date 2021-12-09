@@ -1,35 +1,18 @@
-const { tourService } = require('../services');
 const {
+  getAll,
   getOne,
   createOne,
   updateOne,
   deleteOne 
-}                     = require('./base');
+}                 = require('./base');
+const { 
+  tourService
+}                 = require('../services');
 const {
-  APIFeatures,
   catchAsync
-}                     = require('../utils');
+}                 = require('../utils');
 
-const getTours = catchAsync(async (req, res) => {
-  const { query } = req;
-  const features  = new APIFeatures(query);
-
-  const filterBy        = features.filter();
-  const sortBy          = features.sort();
-  const fields          = features.createFields();
-  const { skip, limit } = features.paginate();
-
-  const tours = await tourService.find(filterBy, sortBy, fields, skip, limit);
-
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
-
+const getTours    = getAll(tourService);
 const getTour     = getOne(tourService);
 const createTour  = createOne(tourService);
 const updateTour  = updateOne(tourService);

@@ -1,4 +1,5 @@
 const {
+  getAll,
   getOne,
   updateOne,
   deleteOne
@@ -7,6 +8,11 @@ const { userService } = require('../services');
 const {
   catchAsync
 }                     = require('../utils');
+
+const getUsers    = getAll(userService);
+const getUser     = getOne(userService);
+const updateUser  = updateOne(userService);
+const deleteUser  = deleteOne(userService);
 
 const updateMe = catchAsync(async (req, res) => {
   const { user, body }  = req;
@@ -31,22 +37,6 @@ const deleteMe = catchAsync(async (req, res) => {
     data: null
   });
 });
-
-const getUsers = catchAsync(async (req, res) => {
-  const users = await userService.find();
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users
-    }
-  });
-});
-
-const getUser     = getOne(userService);
-const updateUser  = updateOne(userService);
-const deleteUser  = deleteOne(userService);
 
 module.exports = {
   updateMe,
