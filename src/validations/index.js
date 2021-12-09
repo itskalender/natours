@@ -4,14 +4,18 @@ const {
   forgotPasswordValidation,
   resetPasswordValidation,
   updatePasswordValidation
-}                       = require('./auth');
+}                           = require('./auth');
+const {
+  createTourValidation,
+  updateTourValidation
+}                           = require('./tour');
 const {
   updateMeValidation,
   updateUserValidation
-}                       = require('./user');
+}                           = require('./user');
 const {
   createReviewValidation 
-}                       = require('./review');
+}                           = require('./review');
 
 module.exports = {
   signUpValidation,
@@ -19,6 +23,9 @@ module.exports = {
   forgotPasswordValidation,
   resetPasswordValidation,
   updatePasswordValidation,
+
+  createTourValidation,
+  updateTourValidation,
 
   updateMeValidation,
   updateUserValidation,
