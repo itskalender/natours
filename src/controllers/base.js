@@ -1,7 +1,35 @@
 const { 
   catchAsync,
+  APIFeatures,
   AppError
 }               = require('../utils');
+
+function getAll(service) {
+  return catchAsync(async (req, res) => {
+    const { query, params } = req;
+    const features          = new APIFeatures(query);
+    const isNestedRoute     = params.tourId;
+
+    const filterBy          = features.filter();
+    const sortBy            = features.sort();
+    const fields            = features.createFields();
+    const { skip, limit }   = features.paginate();
+
+    if (isNestedRoute) {
+      filterBy.tour = params.tourId;
+    }
+  
+    const docs = await service.find(filterBy, sortBy, fields, skip, limit);
+  
+    res.status(200).json({
+      status: 'success',
+      results: docs.length,
+      data: {
+        data: docs
+      }
+    });
+  });
+}
 
 function getOne(service) {
   return catchAsync(async (req, res, next) => {
@@ -78,6 +106,7 @@ function deleteOne(service) {
 }
 
 module.exports = {
+  getAll,
   getOne,
   createOne,
   updateOne,
