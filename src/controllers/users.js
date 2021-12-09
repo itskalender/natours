@@ -1,4 +1,5 @@
-const { 
+const {
+  getOne,
   updateOne,
   deleteOne
 }                     = require('./base');
@@ -43,22 +44,9 @@ const getUsers = catchAsync(async (req, res) => {
   });
 });
 
-const getUser = catchAsync(async (req, res) => {
-  const { id } = req.params;
-
-  const user = await userService.findById(id);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user
-    }
-  });
-});
-
-const updateUser = updateOne(userService);
-
-const deleteUser = deleteOne(userService);
+const getUser     = getOne(userService);
+const updateUser  = updateOne(userService);
+const deleteUser  = deleteOne(userService);
 
 module.exports = {
   updateMe,
