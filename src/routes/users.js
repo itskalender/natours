@@ -1,8 +1,9 @@
 const express         = require('express');
 const router          = express.Router();
 const { 
+  verifyAuth,
+  setAuthIdToParam,
   validate,
-  verifyAuth
 }                     = require('../middlewares');
 const {
   signUpSchema,
@@ -13,6 +14,7 @@ const {
   updateMeSchema
 }                     = require('../validations');
 const {
+  getMe,
   updateMe,
   deleteMe,
   getUsers,
@@ -57,6 +59,13 @@ router.route('/update-password')
     verifyAuth,
     validate('body', updatePasswordSchema),
     updatePassword
+  )
+
+router.route('/me')
+  .get(
+    verifyAuth,
+    setAuthIdToParam,
+    getMe
   )
 
 router.route('/update-me')

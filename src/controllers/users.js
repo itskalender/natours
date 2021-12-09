@@ -14,6 +14,8 @@ const getUser     = getOne(userService);
 const updateUser  = updateOne(userService);
 const deleteUser  = deleteOne(userService);
 
+const getMe       = getOne(userService);
+
 const updateMe = catchAsync(async (req, res) => {
   const { user, body }  = req;
 
@@ -39,6 +41,7 @@ const deleteMe = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  getMe,
   updateMe,
   deleteMe,
   getUsers,
