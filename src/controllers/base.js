@@ -3,6 +3,20 @@ const {
   AppError
 }               = require('../utils');
 
+function createOne(service) {
+  return catchAsync(async (req, res) => {
+    const { body }  = req;
+    const doc       = await service.create(body);
+  
+    res.status(201).json({
+      status: 'success',
+      data: {
+        data: doc
+      }
+    });
+  });
+}
+
 function deleteOne(service) {
   return catchAsync(async (req, res, next) => {
     const { id }  = req.params;
@@ -20,5 +34,6 @@ function deleteOne(service) {
 }
 
 module.exports = {
+  createOne,
   deleteOne
 }
