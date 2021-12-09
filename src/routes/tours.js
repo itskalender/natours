@@ -18,7 +18,7 @@ const {
 
 // router.param('id', checkTourId);
 
-router.use('/:id/reviews', reviewRouter)
+router.use('/:tourId/reviews', reviewRouter)
 
 router.route('/stats')
   .get(getToursStats)
