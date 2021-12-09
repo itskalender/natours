@@ -3,10 +3,8 @@ const fs            = require('fs');
 const mongoose      = require('mongoose');
 const { Tour }      = require('../models');
 
-/* Set Environment */
 setConfig();
 
-/* DB Connection */
 const db                = process.env.DATABASE_CONNECTION;
 const connectionString  = db.replace('<PASSWORD>', process.env.DATABASE_PASSWORD); 
 
@@ -22,13 +20,10 @@ mongoose.connect(connectionString, {
     console.error(`Database connection error: ${err}`);
   })
 
-/* Args */
 const args = process.argv.slice(2);
 
-/* Read Tours */
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`, 'utf8'));
 
-/* Functions  */
 async function deleteAllTours() {
   try {
     await Tour.deleteMany();
@@ -49,7 +44,6 @@ async function importAllTours() {
   process.exit(1);
 }
 
-/* Decision */
 if (args[0] === '--delete') {
   deleteAllTours();
 } else if (args[0] === '--insert') {
