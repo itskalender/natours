@@ -16,8 +16,6 @@ const {
   restrictTo
 }                 = require('../middlewares');
 
-// router.param('id', checkTourId);
-
 router.use('/:tourId/reviews', reviewRouter)
 
 router.route('/stats')
