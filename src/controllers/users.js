@@ -1,3 +1,4 @@
+const { deleteOne }   = require('./base');
 const { userService } = require('../services');
 const {
   catchAsync
@@ -66,12 +67,7 @@ const updateUser = (req, res) => {
   })
 }
 
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route has not been created yet ❗'
-  })
-}
+const deleteUser = deleteOne(userService);
 
 module.exports = {
   updateMe,
