@@ -1,4 +1,5 @@
 const { tourService } = require('../services');
+const { deleteOne }   = require('./base');
 const {
   APIFeatures,
   catchAsync,
@@ -73,20 +74,7 @@ const updateTour = catchAsync(async (req, res, next) => {
 });
 
 
-const deleteTour = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const deletedTour = await tourService.delete(id);
-
-  if (!deletedTour) {
-    return next(new AppError('Cannot find a tour with this id.', 404));
-  }
-  
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-});
+const deleteTour = deleteOne(tourService);
 
 const getToursStats = catchAsync(async (_, res) => {
   const stats = await tourService.getToursStats();
