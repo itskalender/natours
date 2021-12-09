@@ -2,7 +2,14 @@ const { catchAsync }    = require('../utils');
 const { reviewService } = require('../services');
 
 const getReviews = catchAsync(async (req, res) => {
-  const reviews = await reviewService.find();
+  const { id: tourId} = req.params;
+  const filter        = {};
+
+  if (tourId) {
+    filter.tour = tourId;
+  }
+
+  const reviews = await reviewService.find(filter);
 
   res.status(200).json({
     status: 'success',
