@@ -1,7 +1,11 @@
 const { setConfig } = require('../config');
 const fs            = require('fs');
 const mongoose      = require('mongoose');
-const { Tour }      = require('../models');
+const { 
+  Tour,
+  User,
+  Review
+}                   = require('../models');
 
 setConfig();
 
@@ -22,12 +26,16 @@ mongoose.connect(connectionString, {
 
 const args = process.argv.slice(2);
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`, 'utf8'));
+const tours   = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`, 'utf8'));
+const users   = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/users.json`, 'utf8'));
+const reviews = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/reviews.json`, 'utf8'));
 
 async function deleteAllTours() {
   try {
     await Tour.deleteMany();
-    console.log('All tours successfully deleted ✅');
+    await User.deleteMany();
+    await Review.deleteMany();
+    console.log('All development data successfully deleted ✅');
   } catch (err) {
     console.log(err);
   }
@@ -37,7 +45,9 @@ async function deleteAllTours() {
 async function importAllTours() {
   try {
     await Tour.create(tours);
-    console.log('All tours successfully inserted ✅');
+    await User.create(users, { validateBeforeSave: false });
+    await Review.create(reviews);
+    console.log('All development data successfully inserted ✅');
   } catch (err) {
     console.log(err);
   }
