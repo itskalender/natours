@@ -1,1 +1,1 @@
-module.exports.VALID_EMAIL_TLDS = ['com', 'net'];
+module.exports.VALID_EMAIL_TLDS = ['com', 'net', 'io'];
