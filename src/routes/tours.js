@@ -17,6 +17,8 @@ const {
   createTour,
   updateTour,
   deleteTour,
+  getToursWithin,
+  getDistancesToTours,
   getToursStats,
   getToursStatsMonthlyPerYear
 }                         = require('../controllers/tours');
@@ -38,6 +40,12 @@ router.route('/monthly-stats/:year')
     restrictTo('guide', 'lead-guide', 'admin'),
     getToursStatsMonthlyPerYear
   )
+
+router.route('/tours-within/:radius/center/:latlng/unit/:unit')
+  .get(getToursWithin)
+
+router.route('/distances/:latlng/unit/:unit')
+  .get(getDistancesToTours)
 
 router.route('/')
   .get(getTours)

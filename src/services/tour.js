@@ -6,6 +6,43 @@ class TourService extends BaseService {
     return this.model.findById(id).populate('reviews');
   }
 
+  async findToursWithin(lat, lng, radius, unit) {
+    const radium = unit === 'mi' 
+      ? radius / 3963.2
+      : radius / 6378.1
+
+    return this.model.find({
+      startLocation: {
+        $geoWithin: { $centerSphere: [[lng, lat], radium] }
+      }
+    });
+  }
+
+  async getDistancesToTours(lat, lng, unit) {
+    const multiplier = unit === 'mi'
+      ? 0.000621371
+      : 0.001
+
+    return this.model.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: [Number(lng), Number(lat)]
+          },
+          distanceField: 'distance',
+          distanceMultiplier: multiplier
+        }
+      },
+      {
+        $project: {
+          distance: 1,
+          name: 1
+        }
+      }
+    ]);
+  }
+
   async getToursStats() {
     return this.model.aggregate([
       {
