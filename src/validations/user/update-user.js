@@ -18,7 +18,7 @@ const updateUserValidation = Joi.object({
     .max(20),
   
   role: Joi.string()
-    .allow('user', 'guide', 'lead-guide', 'admin')
+    .valid('user', 'guide', 'lead-guide', 'admin')
     .default('user')
 })
   .with('password', 'passwordConfirm');
