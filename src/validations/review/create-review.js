@@ -3,7 +3,7 @@ const Joi = require('joi');
 const createReviewValidation = Joi.object({
   review: Joi.string()
     .required()
-    .max(100),
+    .max(200),
   
   rating: Joi.number()
     .min(1)

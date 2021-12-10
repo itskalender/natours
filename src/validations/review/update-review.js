@@ -3,7 +3,7 @@ const Joi = require('joi');
 const updateReviewValidation = Joi.object({
   review: Joi
     .string()
-    .max(100),
+    .max(200),
   
   rating: Joi
     .number()
